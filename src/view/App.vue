@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header :isLogin="true"></Header>
     <router-view></router-view>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #app {
   display: flex;
   align-content: center;

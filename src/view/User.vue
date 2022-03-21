@@ -23,42 +23,35 @@
           <Icon type="md-chatboxes" />
           我的留言
         </MenuItem>
+        <MenuItem name="uploadGame">
+          <Icon type="ios-arrow-dropup-circle" />
+          我上传的游戏
+        </MenuItem>
+        <MenuItem name="activity">
+          <Icon type="ios-paper-plane" />
+          我的动态
+        </MenuItem>
       </Menu>
     </div>
+    <SearchInUserPath
+      v-show="selectedMenuName !== 'baseInfo'"
+      placeHolder="请输入用户名筛选"
+      style="margin-left: 350px; margin-top: 100px; position: absolute"
+    ></SearchInUserPath>
     <div id="info-wrap">
-      <div
-        id="base-info"
-        v-if="selectedMenuName === '' || selectedMenuName === 'baseInfo'"
-      >
-        <div class="info-item">
-          <span class="info-key">昵称</span>
-          <Input value="黄浩" style="width: 250px; margin-left: 120px" />
-        </div>
-        <div class="info-item">
-          <span class="info-key">性别</span>
-          <Input value="男" style="width: 250px; margin-left: 120px" />
-        </div>
-        <div class="info-item">
-          <span class="info-key">生日</span>
-          <Input value="1999-10-31" style="width: 250px; margin-left: 120px" />
-        </div>
-        <div class="info-item" style="align-items: flex-start">
-          <span class="info-key">个性签名</span>
-          <Input
-            value="1999-10-31"
-            type="textarea"
-            style="width: 250px; margin-left: 120px"
-            :rows="3"
-          />
-        </div>
-      </div>
+      <BaseInfo v-if="selectedMenuName === 'baseInfo'"></BaseInfo>
       <MessageList v-if="selectedMenuName === 'message'"></MessageList>
+      <GameList v-if="selectedMenuName === 'starGame'"></GameList>
     </div>
   </div>
 </template>
 
 <script>
 import MessageList from "../component/MessageList.vue";
+import GameList from "../component/GameList.vue";
+import SearchInUserPath from "../component/SearchInUserPath.vue";
+import BaseInfo from "../component/BaseInfo.vue";
+
 export default {
   data: function () {
     return {
@@ -67,6 +60,9 @@ export default {
   },
   components: {
     MessageList,
+    GameList,
+    SearchInUserPath,
+    BaseInfo,
   },
   methods: {
     handleMenuSelect(menuName) {
@@ -76,27 +72,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #user-view {
   width: 1200px;
-  border: 1px solid balck;
-  display: flex;
+  position: absolute;
+  left: 110px;
+  top: 80px;
 }
 #left-panel {
-  margin-top: 70px;
+  top: 150px;
+  position: fixed;
+  left: 100px;
 }
 #info-wrap {
-  margin-top: 176px;
-  margin-left: 150px;
+  margin-top: 170px;
+  margin-left: 350px;
   width: 600px;
-}
-#base-info .info-key {
-  font-weight: bold;
-  width: 100px;
-}
-#base-info .info-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
 }
 </style>

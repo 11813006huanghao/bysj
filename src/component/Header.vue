@@ -5,26 +5,63 @@
       <img id="title-font" src="../resource/image/title-font.png" alt="" />
     </div>
     <div id="navigator">一</div>
-    <div id="search">二</div>
-    <router-link id="login" to="/login">登录</router-link>
-    <router-link id="register" to="/register">注册</router-link>
+    <router-link v-if="!isLogin" id="login" to="/login">登录</router-link>
+    <router-link v-if="!isLogin" id="register" to="/register">注册</router-link>
+    <div v-if="isLogin" id="current-avatar-wrap">
+      <img id="current-avatar" src="../resource/image/avatar.png" alt="" />
+      <input
+        type="text"
+        id="input-for-focus"
+        @focus="handleAvatarFocus"
+        @blur="handleAvatarBlur"
+      />
+    </div>
+    <Menu
+      v-if="showUserMenu"
+      theme="dark"
+      style="width: 100px; position: absolute; right: 50px; top: 60px"
+    >
+      <MenuItem
+        to="/user/100"
+        style="font-size: 12px; height: 30px"
+        name="userSpace"
+        >个人中心</MenuItem
+      >
+      <MenuItem
+        to="/login"
+        style="font-size: 12px; color: #ff6666"
+        name="logout"
+        >退出登录</MenuItem
+      >
+    </Menu>
   </div>
 </template>
 
 <script>
 export default {
+  props: ["isLogin"],
   data() {
-    return {};
+    return {
+      showUserMenu: false,
+    };
   },
   methods: {
     goToHome() {
       this.$router.push("/");
     },
+    handleAvatarFocus() {
+      this.showUserMenu = true;
+    },
+    handleAvatarBlur() {
+      setTimeout(() => {
+        this.showUserMenu = false;
+      }, 100);
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 #header {
   display: flex;
   align-items: center;
@@ -44,10 +81,12 @@ export default {
 }
 #login {
   position: absolute;
+  color: #ab47bc;
   right: 120px;
 }
 #register {
   position: absolute;
+  color: #ab47bc;
   right: 80px;
 }
 #title-img {
@@ -58,8 +97,25 @@ export default {
   width: 240px;
   height: 45px;
 }
-#login,
-#register {
-  color: #ab47bc;
+#current-avatar {
+  width: 30px;
+}
+#current-avatar-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  right: 50px;
+}
+#input-for-focus {
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  opacity: 0;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  cursor: pointer;
 }
 </style>

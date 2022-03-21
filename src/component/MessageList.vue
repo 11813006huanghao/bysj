@@ -45,17 +45,40 @@
         <Button>回复</Button>
       </div>
     </div>
-    <Page :total="100" show-elevator />
+    <div class="message-item">
+      <div class="message-content">
+        今天是你的生日吗？祝你生日快乐鸭
+        红红火火恍恍惚惚或或或或或或或或或或或或或或 红红火火恍恍惚惚或或或或
+        红红火火恍恍惚惚或或或或或或或或或或或或或或或或或或或或或红红火火恍恍惚惚或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或
+      </div>
+      <div class="message-sender">
+        来自
+        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
+        <div class="sender-name">
+          <div>红红火火恍恍惚惚或或</div>
+          <div>2021-10-21</div>
+        </div>
+      </div>
+      <div class="item-border"></div>
+      <div class="reply-button-wrap">
+        <Button>回复</Button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>
 .message-item {
   width: 600px;
+  word-wrap: break-word;
 }
 .item-border {
   margin-top: 2px;
@@ -88,8 +111,6 @@ export default {};
   margin-bottom: 40px;
 }
 #message-list {
-  height: 900px;
   width: 600px;
-  background-color: aqua;
 }
 </style>
