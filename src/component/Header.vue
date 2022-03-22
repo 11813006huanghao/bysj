@@ -8,12 +8,11 @@
     <router-link v-if="!isLogin" id="login" to="/login">登录</router-link>
     <router-link v-if="!isLogin" id="register" to="/register">注册</router-link>
     <div v-if="isLogin" id="current-avatar-wrap">
-      <img id="current-avatar" src="../resource/image/avatar.png" alt="" />
-      <input
-        type="text"
-        id="input-for-focus"
-        @focus="handleAvatarFocus"
-        @blur="handleAvatarBlur"
+      <img
+        id="current-avatar"
+        src="../resource/image/avatar.png"
+        alt=""
+        @click.stop="handleAvatarClick"
       />
     </div>
     <Menu
@@ -49,14 +48,15 @@ export default {
     goToHome() {
       this.$router.push("/");
     },
-    handleAvatarFocus() {
+    handleAvatarClick() {
       this.showUserMenu = true;
     },
-    handleAvatarBlur() {
-      setTimeout(() => {
-        this.showUserMenu = false;
-      }, 100);
-    },
+  },
+  created() {
+    // 点击页面空白处，用户头像处菜单应该隐藏
+    document.addEventListener("click", (e) => {
+      this.showUserMenu = false;
+    });
   },
 };
 </script>
@@ -99,6 +99,7 @@ export default {
 }
 #current-avatar {
   width: 30px;
+  cursor: pointer;
 }
 #current-avatar-wrap {
   width: 30px;
@@ -107,15 +108,5 @@ export default {
   overflow: hidden;
   position: absolute;
   right: 50px;
-}
-#input-for-focus {
-  top: 0px;
-  left: 0px;
-  z-index: 10;
-  opacity: 0;
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  cursor: pointer;
 }
 </style>
