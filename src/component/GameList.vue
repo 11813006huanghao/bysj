@@ -16,6 +16,7 @@
         <div class="game-star-rate">
           <Rate show-text allow-half :value="3.6">
             <span style="color: #f5a623">3.6</span>
+            <span style="font-size: 6px"> （32001评价）</span>
           </Rate>
         </div>
       </div>
@@ -210,7 +211,7 @@ export default {};
   border-radius: 10px;
 }
 .game-info {
-  width: 250px;
+  width: 270px;
   margin-left: 46px;
 }
 .game-name {

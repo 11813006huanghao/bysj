@@ -15,8 +15,10 @@ Vue.use(VueRouter);
 Vue.use(ViewUI);
 
 import router from "./src/js/router";
+import store from "./src/js/store";
 
 new Vue({
   render: (h) => h(App),
   router,
+  store,
 }).$mount("#app");

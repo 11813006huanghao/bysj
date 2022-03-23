@@ -38,11 +38,15 @@
 
 <script>
 export default {
-  props: ["isLogin"],
   data() {
     return {
       showUserMenu: false,
     };
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.isLogin;
+    },
   },
   methods: {
     goToHome() {

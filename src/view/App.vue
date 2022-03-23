@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header :isLogin="true"></Header>
+    <Header></Header>
     <router-view></router-view>
   </div>
 </template>
