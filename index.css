@@ -6,3 +6,8 @@
     font-family: "jiayouya";
     src: url(./src/resource/font/今年也要加油鸭.ttf);
 }
+
+@font-face {
+    font-family: "jixiehei";
+    src: url(./src/resource/font/文道机械黑.ttf);
+}

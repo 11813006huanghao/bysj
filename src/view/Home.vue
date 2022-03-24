@@ -1,5 +1,12 @@
 <template>
   <div id="home-wrap">
+    <Input
+      size="large"
+      search
+      enter-button
+      placeholder="输入游戏名进行搜索"
+      style="margin-top: 50px"
+    />
     <div id="main-game">
       <div id="carousel-wrap">
         <Carousel
@@ -105,15 +112,20 @@
         </CellGroup>
       </div>
     </div>
+    <SixGameContainer style="margin-top: 100px"></SixGameContainer>
   </div>
 </template>
 
 <script>
+import SixGameContainer from "../component/SixGameContainer.vue";
 export default {
   data() {
     return {
       coverIndex: 0, //轮播图当前展示的游戏封面的序号
     };
+  },
+  components: {
+    SixGameContainer,
   },
   methods: {
     handleCoverClick(e) {
