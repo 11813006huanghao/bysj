@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack"
+    "dev": "webpack-dev-server --env development",
+    "build": "webpack --env production"
   },
   "devDependencies": {
     "css-loader": "^3.6.0",

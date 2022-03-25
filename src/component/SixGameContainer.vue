@@ -25,13 +25,18 @@
         </Rate>
       </div>
     </div>
-    <div class="game-card">
+    <div
+      class="game-card"
+      @mouseenter="handleGameCardHover"
+      @mouseleave="handleGameCardLeave"
+    >
       <div class="game-card-img-wrap">
         <img
           class="game-card-img"
           src="../resource/image/game/game3.jpg"
           alt=""
         />
+        <div v-show="showGameDsc" class="game-dsc">这是一款刺激的竞技游戏</div>
       </div>
       <div class="game-card-footer">
         <div class="game-name">波西利亚时光</div>
