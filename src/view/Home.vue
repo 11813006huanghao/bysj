@@ -113,6 +113,7 @@
       </div>
     </div>
     <SixGameContainer style="margin-top: 100px"></SixGameContainer>
+    <div style="height: 500px">hhh</div>
   </div>
 </template>
 

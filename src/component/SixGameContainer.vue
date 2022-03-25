@@ -4,11 +4,7 @@
       <div id="category-name">竞技类</div>
       <Button style="margin-left: 850px; color: #ff6666">更多</Button>
     </div>
-    <div
-      class="game-card"
-      @mouseenter="handleGameCardHover"
-      @mouseleave="handleGameCardLeave"
-    >
+    <div id="test1" class="game-card">
       <div class="game-card-img-wrap">
         <img
           class="game-card-img"
@@ -24,12 +20,13 @@
           <span style="font-size: 4px"> （32001评价）</span>
         </Rate>
       </div>
+      <div
+        class="mouse-area"
+        @mouseenter="handleGameCardHover('test1')"
+        @mouseleave="handleGameCardLeave('test1')"
+      ></div>
     </div>
-    <div
-      class="game-card"
-      @mouseenter="handleGameCardHover"
-      @mouseleave="handleGameCardLeave"
-    >
+    <div class="game-card" id="test2">
       <div class="game-card-img-wrap">
         <img
           class="game-card-img"
@@ -45,6 +42,11 @@
           <span style="font-size: 4px"> （13201评价）</span>
         </Rate>
       </div>
+      <div
+        class="mouse-area2"
+        @mouseenter="handleGameCardHover('test2')"
+        @mouseleave="handleGameCardLeave('test2')"
+      ></div>
     </div>
     <div class="game-card">
       <div class="game-card-img-wrap">
@@ -62,7 +64,7 @@
         </Rate>
       </div>
     </div>
-    <div class="game-card">
+    <div id="test4" class="game-card">
       <div class="game-card-img-wrap">
         <img
           class="game-card-img"
@@ -77,6 +79,11 @@
           <span style="font-size: 4px"> （423评价）</span>
         </Rate>
       </div>
+      <div
+        class="mouse-area4"
+        @mouseenter="handleGameCardHover('test4')"
+        @mouseleave="handleGameCardLeave('test4')"
+      ></div>
     </div>
   </div>
 </template>
@@ -89,10 +96,17 @@ export default {
     };
   },
   methods: {
-    handleGameCardHover() {
+    handleGameCardHover(id) {
+      let cardDOM = document.getElementById(id);
+      cardDOM.style.marginTop = "-10px";
+      cardDOM.style.boxShadow =
+        "0 4px 8px 0 #ff6666, 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
       this.showGameDsc = true;
     },
-    handleGameCardLeave() {
+    handleGameCardLeave(id) {
+      let cardDOM = document.getElementById(id);
+      cardDOM.style.marginTop = "0px";
+      cardDOM.style.boxShadow = "0 0px 0px 0 #ff6666";
       this.showGameDsc = false;
     },
   },
@@ -102,15 +116,16 @@ export default {
 <style scoped>
 #six-game-container {
   width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
 }
 .game-card {
-  float: left;
+  transition: 200ms;
   margin-right: 64px;
   margin-bottom: 50px;
   cursor: pointer;
-}
-.game-card:hover {
-  box-shadow: 0 4px 8px 0 #ff6666, 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 230px;
 }
 .game-card-img-wrap {
   width: 300px;
@@ -136,6 +151,26 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   width: 300px;
   height: 60px;
+}
+.mouse-area {
+  width: 300px;
+  height: 220px;
+  top: 100px;
+  position: absolute;
+}
+.mouse-area2 {
+  width: 300px;
+  height: 220px;
+  top: 100px;
+  left: 350px;
+  position: absolute;
+}
+.mouse-area4 {
+  width: 300px;
+  height: 220px;
+  top: 370px;
+  left: 0px;
+  position: absolute;
 }
 #category-name {
   font-size: 20px;
