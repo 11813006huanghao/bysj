@@ -16,13 +16,13 @@
           :autoplay-speed="4000"
           v-model="coverIndex"
           @on-change="handleCoverChange"
+          @on-click="handleCoverClick"
         >
           <CarouselItem>
             <img
               class="main-game-cover"
               src="../resource/image/game/game2-cover.jpg"
               alt=""
-              @click="handleCoverClick"
             />
           </CarouselItem>
           <CarouselItem>
@@ -30,7 +30,6 @@
               class="main-game-cover"
               src="../resource/image/game/game1-cover.jpg"
               alt=""
-              @click="handleCoverClick"
             />
           </CarouselItem>
           <CarouselItem>
@@ -38,7 +37,6 @@
               class="main-game-cover"
               src="../resource/image/game/game3-cover.jpg"
               alt=""
-              @click="handleCoverClick"
             />
           </CarouselItem>
           <CarouselItem>
@@ -46,7 +44,6 @@
               class="main-game-cover"
               src="../resource/image/game/game4-cover.jpg"
               alt=""
-              @click="handleCoverClick"
             />
           </CarouselItem>
           <CarouselItem>
@@ -113,7 +110,6 @@
       </div>
     </div>
     <SixGameContainer style="margin-top: 100px"></SixGameContainer>
-    <div style="height: 500px">hhh</div>
   </div>
 </template>
 
@@ -129,8 +125,12 @@ export default {
     SixGameContainer,
   },
   methods: {
-    handleCoverClick(e) {
-      console.log(e.target);
+    handleCoverClick(index) {
+      console.log(index);
+      let newTab = this.$router.resolve({
+        path: "/gamedetail/10",
+      });
+      window.open(newTab.href, "_blank");
     },
     // not used now
     handleCoverChange(oldIndex, newIndex) {

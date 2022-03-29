@@ -1,4 +1,5 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin =
@@ -18,44 +19,99 @@ module.exports = (env, args) => {
         { test: /\.vue$/, use: "vue-loader" },
         { test: /\.css$/, use: ["style-loader", "css-loader"] },
         {
-          test: /\.(ttf|eot|svg|woff|woff2)$/,
-          use: {
-            loader: "url-loader",
-            options: {
-              limit: 1,
-              name: "resource/font/[name].[ext]",
-              publicPath: "./dist",
-            },
-          },
-        },
-        {
           test: /\.less$/,
           use: ["style-loader", "css-loader", { loader: "less-loader" }],
         },
-
-        {
-          test: /\.(jpg|png|gif|bmp|jpeg)$/,
-          use: {
-            loader: "url-loader",
-            options: {
-              limit: 1,
-              name: "resource/image/[name].[ext]",
-              publicPath: "./dist/",
-            },
-          },
-        },
       ],
     },
-    plugins: [new VueLoaderPlugin()],
+    plugins: [
+      new VueLoaderPlugin(),
+      new HtmlWebpackPlugin({ template: "./index.html" }),
+    ],
   };
   if (env.production) {
     console.log("it is production");
     config.mode = "production";
     config.plugins.push(new BundleAnalyzerPlugin());
+    let prodRules = [
+      {
+        test: /\.(ttf|eot|svg|woff|woff2)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/font/[name].[ext]",
+          },
+        },
+      },
+      {
+        test: /\.mp4$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/video/[name].[ext]",
+          },
+        },
+      },
+      {
+        test: /\.(jpg|png|gif|bmp|jpeg)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/image/[name].[ext]",
+          },
+        },
+      },
+    ];
+    for (let rule of prodRules) {
+      config.module.rules.push(rule);
+    }
+    console.log(config.module.rules);
   }
   if (env.development) {
     console.log("it is development");
     config.mode = "development";
+    let devRules = [
+      {
+        test: /\.(ttf|eot|svg|woff|woff2)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/font/[name].[ext]",
+            publicPath: "http://localhost:8080/",
+          },
+        },
+      },
+      {
+        test: /\.mp4$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/video/[name].[ext]",
+            publicPath: "http://localhost:8080/",
+          },
+        },
+      },
+      {
+        test: /\.(jpg|png|gif|bmp|jpeg)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 1,
+            name: "resource/image/[name].[ext]",
+            publicPath: "http://localhost:8080/",
+          },
+        },
+      },
+    ];
+    for (let rule of devRules) {
+      config.module.rules.push(rule);
+    }
+    console.log(config.module.rules);
   }
   return config;
 };

@@ -4,7 +4,11 @@
       <img id="title-img" src="../resource/image/title.jpg" alt="" />
       <img id="title-font" src="../resource/image/title-font.png" alt="" />
     </div>
-    <div id="navigator">一</div>
+    <div id="navigator">
+      <span class="top-menu">主页</span>
+      <span class="top-menu">社区</span>
+      <span class="top-menu">相关</span>
+    </div>
     <router-link v-if="!isLogin" id="login" to="/login">登录</router-link>
     <router-link v-if="!isLogin" id="register" to="/register">注册</router-link>
     <div v-if="isLogin" id="current-avatar-wrap">
@@ -73,6 +77,18 @@ export default {
   position: relative;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   width: 100%;
+}
+#navigator {
+  margin-left: 600px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #98106c;
+}
+.top-menu {
+  cursor: pointer;
+}
+.top-menu:hover {
+  opacity: 0.8;
 }
 #header #title {
   font-size: 25px;

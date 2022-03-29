@@ -85,6 +85,48 @@
         @mouseleave="handleGameCardLeave('test4')"
       ></div>
     </div>
+    <div id="test4" class="game-card">
+      <div class="game-card-img-wrap">
+        <img
+          class="game-card-img"
+          src="../resource/image/game/game7.jpg"
+          alt=""
+        />
+      </div>
+      <div class="game-card-footer">
+        <div class="game-name">围攻</div>
+        <Rate style="margin-left: 10px" show-text allow-half :value="3.9">
+          <span style="color: #f5a623">3.9</span>
+          <span style="font-size: 4px"> （423评价）</span>
+        </Rate>
+      </div>
+      <div
+        class="mouse-area4"
+        @mouseenter="handleGameCardHover('test4')"
+        @mouseleave="handleGameCardLeave('test4')"
+      ></div>
+    </div>
+    <div id="test4" class="game-card">
+      <div class="game-card-img-wrap">
+        <img
+          class="game-card-img"
+          src="../resource/image/game/game7.jpg"
+          alt=""
+        />
+      </div>
+      <div class="game-card-footer">
+        <div class="game-name">围攻</div>
+        <Rate style="margin-left: 10px" show-text allow-half :value="3.9">
+          <span style="color: #f5a623">3.9</span>
+          <span style="font-size: 4px"> （423评价）</span>
+        </Rate>
+      </div>
+      <div
+        class="mouse-area4"
+        @mouseenter="handleGameCardHover('test4')"
+        @mouseleave="handleGameCardLeave('test4')"
+      ></div>
+    </div>
   </div>
 </template>
 
