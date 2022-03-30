@@ -208,7 +208,7 @@ export default {};
   height: 80px;
   width: 130px;
   overflow: hidden;
-  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 .game-info {
   width: 270px;
@@ -216,8 +216,10 @@ export default {};
 }
 .game-name {
   color: #fb8c00;
-  font-weight: bold;
   font-size: 15px;
+  font-family: "jixiehei";
+  height: 20px;
+  line-height: 20px;
 }
 .game-dsc {
   font-size: 8px;

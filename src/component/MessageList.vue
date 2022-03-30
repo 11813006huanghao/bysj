@@ -10,9 +10,9 @@
           <div>2021-10-21</div>
         </div>
       </div>
-      <div class="item-border"></div>
+
       <div class="reply-button-wrap">
-        <Button>回复</Button>
+        <Button class="reply-btn">回复</Button>
       </div>
     </div>
     <div class="message-item">
@@ -25,9 +25,8 @@
           <div>2021-10-21</div>
         </div>
       </div>
-      <div class="item-border"></div>
       <div class="reply-button-wrap">
-        <Button>回复</Button>
+        <Button class="reply-btn">回复</Button>
       </div>
     </div>
     <div class="message-item">
@@ -40,9 +39,8 @@
           <div>2021-10-21</div>
         </div>
       </div>
-      <div class="item-border"></div>
       <div class="reply-button-wrap">
-        <Button>回复</Button>
+        <Button class="reply-btn">回复</Button>
       </div>
     </div>
     <div class="message-item">
@@ -59,9 +57,8 @@
           <div>2021-10-21</div>
         </div>
       </div>
-      <div class="item-border"></div>
       <div class="reply-button-wrap">
-        <Button>回复</Button>
+        <Button class="reply-btn">回复</Button>
       </div>
     </div>
   </div>
@@ -79,11 +76,13 @@ export default {
 .message-item {
   width: 600px;
   word-wrap: break-word;
-}
-.item-border {
-  margin-top: 2px;
-  width: 600px;
   border-bottom: 1px solid #fb8c00;
+}
+.message-content {
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #666666;
 }
 .sender-avatar {
   width: 30px;
@@ -98,7 +97,7 @@ export default {
   display: flex;
   align-items: center;
   padding-left: 390px;
-  padding-top: 10px;
+  padding-top: 20px;
 }
 .sender-name {
   font-size: 10px;
@@ -106,11 +105,18 @@ export default {
   cursor: pointer;
 }
 .reply-button-wrap {
-  padding-left: 540px;
-  padding-top: 5px;
-  margin-bottom: 40px;
+  padding-left: 480px;
+  padding-top: 15px;
+  margin-bottom: 10px;
 }
 #message-list {
   width: 600px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.reply-btn {
+  box-shadow: 0 0 4px #ff6666;
+  width: 100px;
+  height: 30px;
 }
 </style>
