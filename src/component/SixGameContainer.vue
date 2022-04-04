@@ -2,7 +2,9 @@
   <div id="six-game-container">
     <div id="game-category-title">
       <div id="category-name">竞技类</div>
-      <Button style="margin-left: 850px; color: #ff6666">更多</Button>
+      <Button style="margin-left: 850px; color: #ff6666" @click="goToMoreGame"
+        >更多</Button
+      >
     </div>
     <div id="test1" class="game-card">
       <div class="game-card-img-wrap">
@@ -150,6 +152,9 @@ export default {
       cardDOM.style.marginTop = "0px";
       cardDOM.style.boxShadow = "0 0px 0px 0 #ff6666";
       this.showGameDsc = false;
+    },
+    goToMoreGame() {
+      this.$router.push("/moregame");
     },
   },
 };

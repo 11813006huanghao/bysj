@@ -6,7 +6,7 @@
     </div>
     <div id="navigator">
       <span class="top-menu">主页</span>
-      <span class="top-menu">社区</span>
+      <span class="top-menu" @click="goToCommunity">社区</span>
       <span class="top-menu">相关</span>
     </div>
     <router-link v-if="!isLogin" id="login" to="/login">登录</router-link>
@@ -52,6 +52,12 @@ export default {
       return this.$store.state.isLogin;
     },
   },
+  created() {
+    // 点击页面空白处，用户头像处菜单应该隐藏
+    document.addEventListener("click", (e) => {
+      this.showUserMenu = false;
+    });
+  },
   methods: {
     goToHome() {
       this.$router.push("/");
@@ -59,12 +65,9 @@ export default {
     handleAvatarClick() {
       this.showUserMenu = true;
     },
-  },
-  created() {
-    // 点击页面空白处，用户头像处菜单应该隐藏
-    document.addEventListener("click", (e) => {
-      this.showUserMenu = false;
-    });
+    goToCommunity() {
+      this.$router.push("/community");
+    },
   },
 };
 </script>

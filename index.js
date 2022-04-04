@@ -5,6 +5,9 @@ import ViewUI from "view-design";
 import "./src/style/viewUI/overwrite.less";
 import "./index.css";
 
+// 用于开发时打包图片文件
+import "./src/js/image.js";
+
 //防止重复点击同个路由控制台报警
 const originVueRouterPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function (location) {
@@ -16,6 +19,11 @@ Vue.use(ViewUI);
 
 import router from "./src/js/router";
 import store from "./src/js/store";
+
+router.beforeEach((to, from, next) => {
+  console.log("you changed router");
+  next();
+});
 
 new Vue({
   render: (h) => h(App),

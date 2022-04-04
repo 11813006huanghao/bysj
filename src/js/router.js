@@ -1,22 +1,43 @@
 import VueRouter from "vue-router";
+const Login = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/Login.vue");
+const Register = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/Register.vue");
+
+const User = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/User.vue");
+const Home = () =>
+  import(/* webpackChunkName: "view-home" */ "../view/Home.vue");
+const GameDetail = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/GameDetail.vue");
+const MoreGame = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/MoreGame.vue");
+const Community = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/Community.vue");
+
 export default new VueRouter({
   routes: [
     {
       path: "/login",
-      component: (resolve) => resolve(require("../view/Login.vue")),
+      component: Login,
     },
     {
       path: "/register",
-      component: (resolve) => resolve(require("../view/Register.vue")),
+      component: Register,
     },
     {
       path: "/user/:uid",
-      component: (resolve) => resolve(require("../view/User.vue")),
+      component: User,
     },
-    { path: "/", component: (resolve) => resolve(require("../view/Home.vue")) },
+    { path: "/", component: Home },
     {
       path: "/gamedetail/:gid",
-      component: (resolve) => resolve(require("../view/GameDetail.vue")),
+      component: GameDetail,
     },
+    {
+      path: "/moregame",
+      component: MoreGame,
+    },
+    { path: "/community", component: Community },
   ],
 });

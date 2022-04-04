@@ -16,8 +16,4 @@ export default {
 };
 </script>
 
-<style scoped>
-#search-in-user-path {
-  margin-bottom: 40px;
-}
-</style>
+<style scoped></style>

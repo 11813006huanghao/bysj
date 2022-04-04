@@ -1,5 +1,19 @@
 <template>
   <div id="message-list">
+    <div v-for="(item, i) in messageList" :key="i" class="message-item">
+      <div class="message-content">{{ item.content }}</div>
+      <div class="message-sender">
+        来自
+        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
+        <div class="sender-name">
+          <div>{{ item.name }}</div>
+          <div>{{ item.time }}</div>
+        </div>
+      </div>
+      <div class="reply-button-wrap">
+        <Button class="reply-btn">回复</Button>
+      </div>
+    </div>
     <div class="message-item">
       <div class="message-content">今天是你的生日吗？祝你生日快乐鸭</div>
       <div class="message-sender">
@@ -67,7 +81,19 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      messageList: [],
+    };
+  },
+  created() {
+    for (let i = 0; i < 10; i++) {
+      let item = {
+        content: "今天天气不错哦，要出来一起玩吗？",
+        name: "发送者" + i,
+        time: "2021-10-31 14:22:10",
+      };
+      this.messageList.push(item);
+    }
   },
 };
 </script>
@@ -111,8 +137,8 @@ export default {
 }
 #message-list {
   width: 600px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
 }
 .reply-btn {
   box-shadow: 0 0 4px #ff6666;

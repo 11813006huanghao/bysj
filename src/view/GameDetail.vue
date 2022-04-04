@@ -2,7 +2,7 @@
   <div id="game-detail">
     <div id="game-intro">
       <div id="video-wrap">
-        <video id="video" controls="controls" autoplay="autoplay" muted loop>
+        <video id="video" controls="controls" muted loop>
           <source src="../resource/video/video2.mp4" type="video/mp4" />
         </video>
       </div>
@@ -32,7 +32,7 @@
         </div>
         <div id="operation">
           <Button class="game-oper">关注</Button>
-          <Button class="game-oper">评分</Button>
+          <Button class="game-oper" @click="handleShowRate">评分</Button>
         </div>
       </div>
     </div>
@@ -104,11 +104,30 @@
         </div>
       </div>
     </div>
+    <Modal v-model="showRate" :styles="{ top: '200px' }" scrollable>
+      <div id="rate-modal-content-wrap">
+        <div id="rate-modal-tip">请评分</div>
+        <Rate show-text allow-half v-model="rateNum"> </Rate>
+      </div>
+    </Modal>
+    <BackTop></BackTop>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      showRate: false,
+      rateNum: 0,
+    };
+  },
+  methods: {
+    handleShowRate() {
+      this.showRate = true;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -198,7 +217,7 @@ export default {};
 }
 .comment-item {
   width: 650px;
-  height: 350px;
+  height: 300px;
   color: white;
   border: 2px solid grey;
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
@@ -209,7 +228,7 @@ export default {};
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;
-  height: 300px;
+  height: 250px;
   border-bottom: 1px solid grey;
 }
 .comment-footer {
@@ -235,5 +254,14 @@ export default {};
 .like-unlike {
   margin-left: 240px;
   cursor: pointer;
+}
+#rate-modal-content-wrap {
+  height: 50px;
+}
+#rate-modal-tip {
+  width: 100%;
+  font-size: 18px;
+  font-family: "jixiehei";
+  height: 30px;
 }
 </style>

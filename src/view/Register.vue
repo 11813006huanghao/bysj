@@ -1,19 +1,21 @@
 <template>
   <div id="register-center">
-    <img id="register-side-img" src="../resource/image/lake.jpg" alt="" />
+    <img id="register-side-img" src="../resource/image/bridge.jpg" alt="" />
     <div id="form-wrap">
       <div id="register-title">注 册</div>
       <div id="form-body">
         <Input
           prefix="ios-contact"
           placeholder="昵称"
-          style="width: 310px; height: 50px; margin-left: 55px"
+          style="width: 310px; margin-left: 55px; margin-bottom: 10px"
           size="large"
+          maxlength="10"
+          show-word-limit
         />
         <Input
           prefix="ios-call"
           placeholder="手机号"
-          style="width: 310px; height: 50px; margin-left: 55px"
+          style="width: 310px; margin-left: 55px; margin-bottom: 10px"
           size="large"
         />
         <Input
@@ -21,12 +23,14 @@
           placeholder="密码"
           style="width: 310px; height: 50px; margin-left: 55px"
           size="large"
+          type="password"
         />
         <Input
           prefix="ios-lock"
           placeholder="确认密码"
           style="width: 310px; height: 50px; margin-left: 55px"
           size="large"
+          type="password"
         />
         <div id="verify-code-wrap">
           <Input
@@ -47,7 +51,7 @@
         >
       </div>
       <div id="tip-to-login">
-        已有账号？ <span id="go-to-login">去登录</span>
+        已有账号？ <span id="go-to-login" @click="goToLogin">去登录</span>
       </div>
     </div>
   </div>
@@ -58,10 +62,15 @@ export default {
   data: function () {
     return {};
   },
+  methods: {
+    goToLogin() {
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
 #register-center {
   width: 1200px;
   margin-top: 100px;

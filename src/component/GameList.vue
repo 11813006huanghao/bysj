@@ -189,7 +189,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["type"],
+  data() {
+    return {};
+  },
+  created() {},
+};
 </script>
 
 <style scoped>

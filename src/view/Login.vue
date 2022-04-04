@@ -15,6 +15,7 @@
           placeholder="密码"
           style="width: 310px; height: 50px; margin-left: 55px"
           size="large"
+          type="password"
         />
         <br />
         <Checkbox style="margin-left: 55px">记住密码</Checkbox>
@@ -30,7 +31,7 @@
         >
       </div>
       <div id="tip-to-register">
-        还未注册？ <span id="go-to-register">去注册</span>
+        还未注册？ <span id="go-to-register" @click="goToRegister">去注册</span>
         <span id="forget-pwd">忘记密码？</span>
       </div>
     </div>
@@ -43,10 +44,15 @@ export default {
   data: function () {
     return {};
   },
+  methods: {
+    goToRegister() {
+      this.$router.push("/register");
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
 #login-center {
   width: 1200px;
   margin-top: 100px;
