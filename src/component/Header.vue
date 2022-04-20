@@ -28,6 +28,7 @@
         to="/user/100"
         style="font-size: 12px; height: 30px"
         name="userSpace"
+        target="_blank"
         >个人中心</MenuItem
       >
       <MenuItem
@@ -66,7 +67,8 @@ export default {
       this.showUserMenu = true;
     },
     goToCommunity() {
-      this.$router.push("/community");
+      let newTab = this.$router.resolve({ path: "/community" });
+      window.open(newTab.href, "_blank");
     },
   },
 };

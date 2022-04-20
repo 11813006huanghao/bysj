@@ -31,8 +31,12 @@
           </Rate>
         </div>
         <div id="operation">
-          <Button class="game-oper">关注</Button>
-          <Button class="game-oper" @click="handleShowRate">评分</Button>
+          <Button class="game-oper">{{
+            hasStarGame ? "取消关注" : "关注"
+          }}</Button>
+          <Button class="game-oper" @click="handleShowRate">{{
+            hasRate ? "我的评分" : "评分"
+          }}</Button>
         </div>
       </div>
     </div>
@@ -51,11 +55,14 @@
           </div>
           <div class="sender-name">徐承启</div>
           <div class="sender-time">2022-03-05 14:46:22</div>
-          <div class="like-unlike">
-            <Icon type="md-thumbs-up" size="20"></Icon>
+          <div :class="{ likeUnlike: true, red: like }">
+            <Icon type="md-thumbs-up" size="20"></Icon> (13478)
           </div>
-          <div class="like-unlike" style="margin-left: 15px">
-            <Icon type="md-thumbs-down" size="20"></Icon>
+          <div
+            :class="{ likeUnlike: true, red: unlike }"
+            style="margin-left: 15px"
+          >
+            <Icon type="md-thumbs-down" size="20"></Icon> (487)
           </div>
         </div>
       </div>
@@ -104,11 +111,32 @@
         </div>
       </div>
     </div>
-    <Modal v-model="showRate" :styles="{ top: '200px' }" scrollable>
+    <Affix :offset-top="50" style="position: absolute; left: 970px; top: 760px">
+      <Button
+        style="width: 120px; height: 40px"
+        @click="showPublishCommentModal = true"
+        >发表评论</Button
+      >
+    </Affix>
+    <Modal
+      v-model="showRate"
+      :styles="{ top: '200px' }"
+      scrollable
+      @on-ok="handleRate"
+    >
       <div id="rate-modal-content-wrap">
-        <div id="rate-modal-tip">请评分</div>
-        <Rate show-text allow-half v-model="rateNum"> </Rate>
+        <div id="rate-modal-tip">{{ hasRate ? "我的评分" : "请评分" }}</div>
+        <Rate show-text allow-half v-model="rateNum" :disabled="hasRate">
+        </Rate>
       </div>
+    </Modal>
+    <Modal v-model="showPublishCommentModal" title="发表评论">
+      <Input
+        type="textarea"
+        v-model="userComment"
+        placeholder="说点什么..."
+        :rows="5"
+      />
     </Modal>
     <BackTop></BackTop>
   </div>
@@ -118,13 +146,27 @@
 export default {
   data() {
     return {
-      showRate: false,
-      rateNum: 0,
+      showRate: false, //展示评分弹窗
+      rateNum: 5, //评分分数
+      hasRate: true, //当前用户是否已评分
+      hasStarGame: true, //当前用户是否已关注该游戏
+      like: false,
+      unlike: true,
+      userComment: "", //用户对游戏发表的评论
+      showPublishCommentModal: false, //展示用户输入评论的弹窗
     };
   },
   methods: {
     handleShowRate() {
       this.showRate = true;
+    },
+    handleRate() {
+      if (this.hasRate) return;
+      //发请求传rateNum给后端
+      console.log("you rate is ", this.rateNum);
+    },
+    handleStarOrUnstarGame() {
+      console.log("star or unstar game");
     },
   },
 };
@@ -213,22 +255,26 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
 }
 .comment-item {
   width: 650px;
-  height: 300px;
+  min-height: 100px;
   color: white;
   border: 2px solid grey;
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   margin-bottom: 30px;
 }
+.comment-item:hover {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
+}
 .comment-content {
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;
-  height: 250px;
+  min-height: 150px;
   border-bottom: 1px solid grey;
 }
 .comment-footer {
@@ -251,9 +297,11 @@ export default {
 .sender-time {
   font-size: 10px;
 }
-.like-unlike {
-  margin-left: 240px;
+.likeUnlike {
+  margin-left: 200px;
   cursor: pointer;
+  font-size: 10px;
+  width: 50px;
 }
 #rate-modal-content-wrap {
   height: 50px;
@@ -263,5 +311,8 @@ export default {
   font-size: 18px;
   font-family: "jixiehei";
   height: 30px;
+}
+.red {
+  color: #ff6666;
 }
 </style>

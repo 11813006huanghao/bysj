@@ -14,6 +14,8 @@ const MoreGame = () =>
   import(/* webpackChunkName: "view-group" */ "../view/MoreGame.vue");
 const Community = () =>
   import(/* webpackChunkName: "view-group" */ "../view/Community.vue");
+const PostDetail = () =>
+  import(/* webpackChunkName: "view-group" */ "../view/PostDetail.vue");
 
 export default new VueRouter({
   routes: [
@@ -39,5 +41,6 @@ export default new VueRouter({
       component: MoreGame,
     },
     { path: "/community", component: Community },
+    { path: "/postdetail/:pid", component: PostDetail },
   ],
 });

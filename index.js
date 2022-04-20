@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./src/view/App.vue";
 import VueRouter from "vue-router";
 import ViewUI from "view-design";
+import axios from "axios";
 import "./src/style/viewUI/overwrite.less";
 import "./index.css";
 
@@ -14,15 +15,29 @@ VueRouter.prototype.push = function (location) {
   return originVueRouterPush.call(this, location).catch((err) => err);
 };
 
+axios.defaults.baseURL = "http://localhost:9090/";
+axios.defaults.withCredentials = true; //设置axios允许后端设置cookie
+Vue.prototype.$axios = axios;
+
 Vue.use(VueRouter);
 Vue.use(ViewUI);
 
 import router from "./src/js/router";
 import store from "./src/js/store";
+import { postRequest } from "./src/js/request";
 
 router.beforeEach((to, from, next) => {
-  console.log("you changed router");
-  next();
+  if (to.path === "/login") return next();
+  //用户进入某些特定页面前，发起请求判断用户是否登录
+  postRequest("/login", { operType: 2 }, (data) => {
+    if (data.error === 2) {
+      Vue.prototype.$Message.error("登录过期，请重新登录");
+      next("/login");
+    } else {
+      store.commit("login", data.uid);
+      next();
+    }
+  });
 });
 
 new Vue({

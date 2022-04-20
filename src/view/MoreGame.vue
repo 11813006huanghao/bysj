@@ -42,7 +42,7 @@
         <Button>重置</Button>
       </div>
     </div>
-    <GameList style="margin-top: 50px"></GameList>
+    <GameList style="margin-top: 50px" type="moreGame"></GameList>
   </div>
 </template>
 

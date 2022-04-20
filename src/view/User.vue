@@ -2,7 +2,11 @@
   <div id="user-view">
     <div id="left-panel">
       <Icon type="ios-contact" size="100" style="margin-left: 12px" />
-      <Menu style="width: 200px" @on-select="handleMenuSelect">
+      <Menu
+        style="width: 200px"
+        :active-name="selectedMenuName"
+        @on-select="handleMenuSelect"
+      >
         <MenuItem name="baseInfo">
           <Icon type="md-document" />
           基本信息

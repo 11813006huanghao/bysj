@@ -4,11 +4,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isLogin: true,
+    isLogin: false,
     uid: undefined,
   },
   mutations: {
-    login(uid) {
+    login(state, uid) {
       state.isLogin = true;
       state.uid = uid;
     },

@@ -3,7 +3,12 @@
     <div v-for="(post, i) in postList" :key="i" class="post-item">
       <div class="post-content">
         <div class="post-cover-wrap">
-          <img class="post-cover" :src="post.coverSrc" alt="" />
+          <img
+            class="post-cover"
+            :src="post.coverSrc"
+            alt=""
+            @click="goToPostDetail(12)"
+          />
         </div>
         <div class="content-right">
           <div class="post-name">{{ post.name }}</div>
@@ -54,6 +59,14 @@ export default {
   },
   components: {
     NoContent,
+  },
+  methods: {
+    goToPostDetail(pid) {
+      let newTab = this.$router.resolve({
+        path: "/postdetail/" + pid,
+      });
+      window.open(newTab.href, "_blank");
+    },
   },
 };
 </script>

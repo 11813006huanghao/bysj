@@ -21,7 +21,22 @@
         </div>
       </div>
       <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
+      <div class="btn-group">
+        <Button
+          v-show="type === 'upload'"
+          style="
+            color: #ff6666;
+            width: 90px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+          "
+          >删除</Button
+        >
+        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+          >更多详情</Button
+        >
+      </div>
     </div>
     <div class="game-item">
       <div class="game-picture-wrap">
@@ -44,7 +59,22 @@
         <div class="game-label"></div>
       </div>
       <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
+      <div class="btn-group">
+        <Button
+          v-show="type === 'upload'"
+          style="
+            color: #ff6666;
+            width: 90px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+          "
+          >删除</Button
+        >
+        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+          >更多详情</Button
+        >
+      </div>
     </div>
     <div class="game-item">
       <div class="game-picture-wrap">
@@ -61,7 +91,22 @@
         <div class="game-label"></div>
       </div>
       <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
+      <div class="btn-group">
+        <Button
+          v-show="type === 'upload'"
+          style="
+            color: #ff6666;
+            width: 90px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+          "
+          >删除</Button
+        >
+        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+          >更多详情</Button
+        >
+      </div>
     </div>
     <div class="game-item">
       <div class="game-picture-wrap">
@@ -82,7 +127,22 @@
         <div class="game-label"></div>
       </div>
       <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
+      <div class="btn-group">
+        <Button
+          v-show="type === 'upload'"
+          style="
+            color: #ff6666;
+            width: 90px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+          "
+          >删除</Button
+        >
+        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+          >更多详情</Button
+        >
+      </div>
     </div>
     <div class="game-item">
       <div class="game-picture-wrap">
@@ -183,7 +243,21 @@
         <div class="game-label"></div>
       </div>
       <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
+      <div class="btn-group">
+        <Button
+          style="
+            color: #ff6666;
+            width: 90px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+          "
+          >删除</Button
+        >
+        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+          >更多详情</Button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -201,7 +275,7 @@ export default {
 <style scoped>
 .game-item {
   display: flex;
-  width: 600px;
+  width: 700px;
   margin-bottom: 30px;
 }
 #game-list {
@@ -235,9 +309,5 @@ export default {
   margin-left: 50px;
   height: 80px;
   border-right: 1px solid #ff6666;
-}
-.game-detail-btn {
-  margin-top: 48px;
-  margin-left: 8px;
 }
 </style>
