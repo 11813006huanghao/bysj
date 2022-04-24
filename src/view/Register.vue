@@ -121,7 +121,7 @@ export default {
       }
       this.searchNameTimer = setTimeout(() => {
         postRequest(
-          "/register",
+          "register",
           { userName: this.name, operType: 3 },
           (data) => {
             if (data.error === 1) {
@@ -143,7 +143,7 @@ export default {
     },
     handleRegister() {
       postRequest(
-        "/register",
+        "register",
         {
           userName: this.name,
           phone: this.phoneNum,
@@ -186,17 +186,13 @@ export default {
         }
       }, 1000);
       let that = this;
-      postRequest(
-        "/register",
-        { phone: this.phoneNum, operType: 2 },
-        (data) => {
-          if (data.error === 6) {
-            that.$Message.success("验证码发送成功");
-          } else {
-            that.$Message.error("验证码发送失败，请检查手机号是否正确");
-          }
+      postRequest("register", { phone: this.phoneNum, operType: 2 }, (data) => {
+        if (data.error === 6) {
+          that.$Message.success("验证码发送成功");
+        } else {
+          that.$Message.error("验证码发送失败，请检查手机号是否正确");
         }
-      );
+      });
     },
   },
 };

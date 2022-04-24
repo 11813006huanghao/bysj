@@ -7,3 +7,7 @@
     font-family: "jixiehei";
     src: url(./src/resource/font/文道机械黑.ttf);
 }
+
+textarea[class="ivu-input"]{  /*设置iview的textarea不可改变尺寸*/
+    resize: none;
+}

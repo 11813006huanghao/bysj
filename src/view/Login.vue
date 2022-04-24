@@ -209,7 +209,7 @@ export default {
         }
       }, 1000);
       postRequest(
-        "/register",
+        "register",
         { phone: this.resetPhoneNum, operType: 1 },
         (data) => {
           if (data.error === 4) this.$Message.error("手机号未注册过");

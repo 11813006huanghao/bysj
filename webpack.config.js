@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const webpack = require("webpack");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
@@ -27,6 +28,12 @@ module.exports = (env, args) => {
     plugins: [
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({ template: "./index.html" }),
+      new webpack.DefinePlugin({
+        //用于代码运行时根据开发环境和生产环境分别配置不同的变量
+        "process.env": env.production
+          ? "{production:true}"
+          : "{development:true}",
+      }),
     ],
   };
   if (env.production) {

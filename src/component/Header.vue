@@ -14,7 +14,7 @@
     <div v-if="isLogin" id="current-avatar-wrap">
       <img
         id="current-avatar"
-        src="../resource/image/avatar.png"
+        :src="avatarUrl"
         alt=""
         @click.stop="handleAvatarClick"
       />
@@ -23,18 +23,12 @@
       v-if="showUserMenu"
       theme="dark"
       style="width: 100px; position: absolute; right: 50px; top: 60px"
+      @on-select="handleUserMenuSelect"
     >
-      <MenuItem
-        to="/user/100"
-        style="font-size: 12px; height: 30px"
-        name="userSpace"
-        target="_blank"
+      <MenuItem style="font-size: 12px; height: 30px" name="userSpace"
         >个人中心</MenuItem
       >
-      <MenuItem
-        to="/login"
-        style="font-size: 12px; color: #ff6666"
-        name="logout"
+      <MenuItem style="font-size: 12px; color: #ff6666" name="logout"
         >退出登录</MenuItem
       >
     </Menu>
@@ -42,15 +36,25 @@
 </template>
 
 <script>
+import { getAvatarUrl } from "../js/request";
 export default {
   data() {
     return {
-      showUserMenu: false,
+      showUserMenu: false, //展示头像下方的菜单
+      avatarUrl: "",
     };
   },
   computed: {
     isLogin() {
       return this.$store.state.isLogin;
+    },
+    uid() {
+      return this.$store.state.uid;
+    },
+  },
+  watch: {
+    uid(newValue, oldValue) {
+      getAvatarUrl(this);
     },
   },
   created() {
@@ -69,6 +73,17 @@ export default {
     goToCommunity() {
       let newTab = this.$router.resolve({ path: "/community" });
       window.open(newTab.href, "_blank");
+    },
+    handleUserMenuSelect(menuName) {
+      if (menuName === "logout") {
+        this.$store.commit("logout");
+        document.cookie = "uid=null;max-age=0";
+        this.$router.push("/login");
+      } else {
+        let newTab = this.$router.resolve({ path: "/user/" + this.uid });
+        window.open(newTab.href, "_blank");
+      }
+      this.showUserMenu = false;
     },
   },
 };

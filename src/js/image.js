@@ -9,3 +9,4 @@ import post6 from "../resource/image/post/post6.jpg";
 import post7 from "../resource/image/post/post7.jpg";
 import post8 from "../resource/image/post/post8.jpg";
 import post9 from "../resource/image/post/post9.jpg";
+import defaultAvatar from "../resource/image/avatar-default.png";

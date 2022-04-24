@@ -1,22 +1,20 @@
 <template>
   <div id="game-list">
-    <div class="game-item">
+    <div v-for="(game, i) in userUploadGameList" :key="i" class="game-item">
       <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game1.jpg"
-          alt=""
-        />
+        <img class="game-picture" :src="game.gameCoverSrc" alt="" />
       </div>
       <div class="game-info">
-        <div class="game-name">马可波罗</div>
+        <div class="game-name">{{ game.gameName }}</div>
         <div class="game-dsc">
-          这是一款休闲的射击小游戏，让你感受畅汗淋漓的战斗！
+          {{ game.gameBriefDesc }}
         </div>
         <div class="game-star-rate">
-          <Rate show-text allow-half :value="3.6">
-            <span style="color: #f5a623">3.6</span>
-            <span style="font-size: 6px"> （32001评价）</span>
+          <Rate show-text allow-half :value="Number(game.gameRate)" disabled>
+            <span style="color: #f5a623">{{ game.gameRate }}</span>
+            <span style="font-size: 6px">{{
+              "（" + game.gameRaterNum + "人评价）"
+            }}</span>
           </Rate>
         </div>
       </div>
@@ -38,25 +36,23 @@
         >
       </div>
     </div>
-    <div class="game-item">
+    <div v-for="(game, i) in userStarGameList" :key="i" class="game-item">
       <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game2.jpg"
-          alt=""
-        />
+        <img class="game-picture" :src="game.gameCoverSrc" alt="" />
       </div>
       <div class="game-info">
-        <div class="game-name">英雄联盟</div>
+        <div class="game-name">{{ game.gameName }}</div>
         <div class="game-dsc">
-          全新的竞技游戏模式，在操作和意识中不断的较量，拔得水晶头筹，获得胜利！
+          {{ game.gameBriefDesc }}
         </div>
         <div class="game-star-rate">
-          <Rate show-text allow-half :value="4.1">
-            <span style="color: #f5a623">4.1</span>
+          <Rate show-text allow-half :value="Number(game.gameRate)" disabled>
+            <span style="color: #f5a623">{{ game.gameRate }}</span>
+            <span style="font-size: 6px">{{
+              "（" + game.gameRaterNum + "人评价）"
+            }}</span>
           </Rate>
         </div>
-        <div class="game-label"></div>
       </div>
       <div class="item-border"></div>
       <div class="btn-group">
@@ -76,199 +72,77 @@
         >
       </div>
     </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game3.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">波西亚时光</div>
-        <div class="game-dsc">清爽休闲的小游戏，在疲惫时来这里好好放松吧</div>
-        <div class="game-star-rate"></div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <div class="btn-group">
-        <Button
-          v-show="type === 'upload'"
-          style="
-            color: #ff6666;
-            width: 90px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-          "
-          >删除</Button
-        >
-        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
-          >更多详情</Button
-        >
-      </div>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game4.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">我的世界</div>
-        <div class="game-dsc">在我的世界中发现更大游戏世界</div>
-        <div class="game-star-rate">
-          <Rate show-text allow-half :value="2.6">
-            <span style="color: #f5a623">2.6</span>
-          </Rate>
-        </div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <div class="btn-group">
-        <Button
-          v-show="type === 'upload'"
-          style="
-            color: #ff6666;
-            width: 90px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-          "
-          >删除</Button
-        >
-        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
-          >更多详情</Button
-        >
-      </div>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game5.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">伊苏白金</div>
-        <div class="game-dsc">
-          这是一款游戏合集，有着超真实的还原度，带给你全方位的沉浸式体验
-        </div>
-        <div class="game-star-rate">
-          <Rate show-text allow-half :value="3.0">
-            <span style="color: #f5a623">3.0</span>
-          </Rate>
-        </div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game6.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">游戏一</div>
-        <div class="game-dsc">新的版本即将上线，敬请期待！</div>
-        <div class="game-star-rate"></div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game7.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">围攻</div>
-        <div class="game-dsc">多人合作，选边站队，围攻城墙</div>
-        <div class="game-star-rate">
-          <Rate show-text allow-half :value="5.0">
-            <span style="color: #f5a623">5.0</span>
-          </Rate>
-        </div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game8.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">剑灵</div>
-        <div class="game-dsc">满满的仙侠游戏风，快来用手中之剑，漫游天涯</div>
-        <div class="game-star-rate">
-          <Rate show-text allow-half :value="4.8">
-            <span style="color: #f5a623">4.8</span>
-          </Rate>
-        </div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <Button class="game-detail-btn" style="color: #ff6666">更多详情</Button>
-    </div>
-    <div class="game-item">
-      <div class="game-picture-wrap">
-        <img
-          class="game-picture"
-          src="../resource/image/game/game9.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-info">
-        <div class="game-name">绝地求生</div>
-        <div class="game-dsc">
-          加油特种兵，在残酷陌生的环境下做最后的生存者吧，更多惊喜在前方等待着你！
-        </div>
-        <div class="game-star-rate"></div>
-        <div class="game-label"></div>
-      </div>
-      <div class="item-border"></div>
-      <div class="btn-group">
-        <Button
-          style="
-            color: #ff6666;
-            width: 90px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-          "
-          >删除</Button
-        >
-        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
-          >更多详情</Button
-        >
-      </div>
-    </div>
+    <NoContent v-if="showNoContent"></NoContent>
   </div>
 </template>
 
 <script>
+import { postRequest } from "../js/request";
+import globalConfig from "../js/config";
+import NoContent from "../component/NoContent.vue";
 export default {
-  props: ["type"],
+  props: ["type"], //star, upload
   data() {
-    return {};
+    return {
+      userUploadGameList: [],
+      userStarGameList: [],
+    };
   },
-  created() {},
+  computed: {
+    showNoContent() {
+      return (
+        (this.type === "star" && this.userStarGameList.length === 0) ||
+        (this.type === "upload" && this.userUploadGameList.length === 0)
+      );
+    },
+  },
+  components: {
+    NoContent,
+  },
+  created() {
+    if (this.type === "upload") this.getUserUploadGame();
+    else if (this.type === "star") this.getUserStarGameList();
+  },
+  methods: {
+    getUserUploadGame() {
+      postRequest(
+        "getGameInfo",
+        { uid: this.$store.state.uid, operType: 3 },
+        (data) => {
+          if (data.error === 4) {
+            let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
+            for (let item of data.userUploadGameList) {
+              item.gameCoverSrc =
+                srcSuffix + "/" + item.gid + "/" + item.gameCoverUrl;
+              item.gameBriefDesc = item.gameDesc;
+              if (item.gameDesc.length > 40)
+                item.gameBriefDesc = item.gameDesc.substr(0, 40) + "...";
+            }
+            Object.assign(this, data);
+          } else this.$Message.error("获取上传游戏列表失败");
+        }
+      );
+    },
+    getUserStarGameList() {
+      postRequest(
+        "getGameInfo",
+        { uid: this.$store.state.uid, operType: 4 },
+        (data) => {
+          if (data.error === 5) {
+            let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
+            for (let item of data.userStarGameList) {
+              item.gameCoverSrc =
+                srcSuffix + "/" + item.gid + "/" + item.gameCoverUrl;
+              item.gameBriefDesc = item.gameDesc;
+              if (item.gameDesc.length > 40)
+                item.gameBriefDesc = item.gameDesc.substr(0, 40) + "...";
+            }
+            Object.assign(this, data);
+          } else this.$Message.error("获取关注游戏列表失败");
+        }
+      );
+    },
+  },
 };
 </script>
 
