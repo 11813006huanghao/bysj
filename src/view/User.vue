@@ -78,6 +78,7 @@
       <GameList
         v-show="selectedMenuName === 'uploadedGame'"
         type="upload"
+        ref="uploadGameList"
       ></GameList>
     </div>
     <Modal v-model="showUploadGameModal" title="上传新游戏" scrollable>
@@ -105,14 +106,14 @@
               v-model="gameLabelList"
               @on-change="handleGameLabelChange"
             >
-              <Checkbox label="competitive">竞技</Checkbox>
-              <Checkbox label="relax">休闲</Checkbox>
-              <Checkbox label="shoot">射击</Checkbox>
-              <Checkbox label="sport">体育</Checkbox>
-              <Checkbox label="scary">恐怖</Checkbox>
-              <Checkbox label="mobile">手游</Checkbox>
-              <Checkbox label="card">卡牌</Checkbox>
-              <Checkbox label="development">养成</Checkbox>
+              <Checkbox label="竞技">竞技</Checkbox>
+              <Checkbox label="休闲">休闲</Checkbox>
+              <Checkbox label="射击">射击</Checkbox>
+              <Checkbox label="体育">体育</Checkbox>
+              <Checkbox label="恐怖">恐怖</Checkbox>
+              <Checkbox label="手游">手游</Checkbox>
+              <Checkbox label="卡牌">卡牌</Checkbox>
+              <Checkbox label="养成">养成</Checkbox>
             </CheckboxGroup>
           </div>
         </div>
@@ -172,7 +173,6 @@ import SearchInUserPath from "../component/SearchInUserPath.vue";
 import BaseInfo from "../component/BaseInfo.vue";
 import { getAvatarUrl } from "../js/request";
 import { postRequest } from "../js/request";
-import { getStandardTimeStr } from "../js/util";
 
 export default {
   data: function () {
@@ -269,13 +269,14 @@ export default {
       formData.append("gameCoverFile", this.$refs.coverFileInput.files[0]);
       formData.append("gameVideoFile", this.$refs.videoFileInput.files[0]);
       formData.append("operType", 1);
-      formData.append("gameUploadTime", getStandardTimeStr(new Date()));
+      formData.append("gameUploadTimeStamp", new Date().getTime());
       postRequest("getGameInfo", formData, (data) => {
         if (data.error === -3) this.$Message.error("上传游戏失败");
         else {
           this.$Message.success("上传游戏成功");
           this.showUploadGameModal = false;
           this.clearGameUploadInput();
+          this.$refs.uploadGameList.getUserUploadGameList();
         }
       });
     },

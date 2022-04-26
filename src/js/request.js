@@ -1,8 +1,36 @@
 import Vue from "vue";
 import axios from "axios";
 import globalConfig from "./config";
+import store from "../js/store";
+import router from "../js/router";
 let tmpVue = new Vue();
-export function postRequest(url, payload = {}, callback) {
+
+//检测用户当前登陆状态
+async function checkLoginStatus() {
+  return new Promise((resolve, reject) => {
+    axios.post("login", { uid: store.state.uid, operType: 2 }).then((rsp) => {
+      if (rsp.data.error === 2) {
+        //cookie过期，强制重新登录
+        router.push("/login");
+        resolve(false);
+      } else if (rsp.data.error === 3) {
+        //uid过期，和新cookie不匹配
+        store.commit("login", rsp.data.uid);
+        location.reload();
+        resolve(false);
+      } else if (rsp.data.error === 5) {
+        //用户在cookie有效期内重新打开网页
+        store.commit("login", rsp.data.uid);
+        resolve(true);
+      }
+      resolve(true);
+    });
+  });
+}
+
+export async function postRequest(url, payload = {}, callback) {
+  let loginStatus = await checkLoginStatus();
+  if (!loginStatus) return; //所有非登录页请求在执行前都要校验登录状态
   axios.post(url, payload).then(
     (rsp) => {
       if (rsp.data.error === 11)

@@ -11,3 +11,7 @@
 textarea[class="ivu-input"]{  /*设置iview的textarea不可改变尺寸*/
     resize: none;
 }
+
+.ivu-page-simple-pager input{ /*iview的翻页组件*/
+    width: 34px !important;
+}

@@ -1,5 +1,4 @@
 //根据开发环境和生产环境配置不同的请求url
-console.log(process.env);
 let host = process.env.development
   ? "http://localhost"
   : "http://116.205.171.68";

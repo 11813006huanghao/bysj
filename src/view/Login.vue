@@ -138,12 +138,16 @@ export default {
       this.$router.push("/register");
     },
     handleLogin() {
-      postRequest(
-        "login",
-        { phone: this.phoneNum, password: this.password, operType: 1 },
-        (data) => {
+      this.$axios
+        .post("login", {
+          phone: this.phoneNum,
+          password: this.password,
+          operType: 1,
+        })
+        .then((rsp) => {
+          let data = rsp.data;
           if (data.error === 0) {
-            this.$store.commit("login");
+            this.$store.commit("login", data.uid);
             this.$router.push("/");
             if (this.rememberPwd) {
               localStorage.setItem("phoneNum", this.phoneNum);
@@ -154,11 +158,8 @@ export default {
             }
           } else if (data.error === 1) {
             this.$Message.error("手机号未注册或密码不正确");
-          } else {
-            this.$Message.error("服务器错误，请稍后再试");
           }
-        }
-      );
+        });
     },
     handleResetPwd() {
       if (this.btnDisable || !/[0-9]{11}/.test(this.resetPhoneNum)) {

@@ -22,6 +22,10 @@
       <div class="btn-group">
         <Button
           v-show="type === 'upload'"
+          @click="
+            showDeleteGameConfirm = true;
+            currentDeleteGid = game.gid;
+          "
           style="
             color: #ff6666;
             width: 90px;
@@ -56,23 +60,26 @@
       </div>
       <div class="item-border"></div>
       <div class="btn-group">
-        <Button
-          v-show="type === 'upload'"
-          style="
-            color: #ff6666;
-            width: 90px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-          "
-          >删除</Button
-        >
         <Button style="color: #ff6666; width: 90px; margin-left: 10px"
           >更多详情</Button
         >
       </div>
     </div>
     <NoContent v-if="showNoContent"></NoContent>
+    <Page
+      v-if="!showNoContent"
+      :total="total"
+      @on-change="handlePageChange"
+      simple
+    />
+    <Modal
+      title="删除"
+      v-model="showDeleteGameConfirm"
+      @on-ok="deleteGame"
+      :styles="{ top: '200px' }"
+    >
+      确认删除所上传的游戏吗？
+    </Modal>
   </div>
 </template>
 
@@ -86,6 +93,10 @@ export default {
     return {
       userUploadGameList: [],
       userStarGameList: [],
+      currentPage: 1,
+      total: 0,
+      showDeleteGameConfirm: false, //展示确认删除对话框
+      currentDeleteGid: null,
     };
   },
   computed: {
@@ -100,14 +111,14 @@ export default {
     NoContent,
   },
   created() {
-    if (this.type === "upload") this.getUserUploadGame();
+    if (this.type === "upload") this.getUserUploadGameList();
     else if (this.type === "star") this.getUserStarGameList();
   },
   methods: {
-    getUserUploadGame() {
+    getUserUploadGameList() {
       postRequest(
         "getGameInfo",
-        { uid: this.$store.state.uid, operType: 3 },
+        { uid: this.$store.state.uid, page: this.currentPage, operType: 3 },
         (data) => {
           if (data.error === 4) {
             let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
@@ -126,7 +137,7 @@ export default {
     getUserStarGameList() {
       postRequest(
         "getGameInfo",
-        { uid: this.$store.state.uid, operType: 4 },
+        { uid: this.$store.state.uid, page: this.currentPage, operType: 4 },
         (data) => {
           if (data.error === 5) {
             let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
@@ -141,6 +152,19 @@ export default {
           } else this.$Message.error("获取关注游戏列表失败");
         }
       );
+    },
+    handlePageChange(newPage) {
+      this.currentPage = newPage;
+      this.type === "upload" && this.getUserUploadGameList();
+      this.type === "star" && this.getUserStarGameList();
+    },
+    deleteGame() {
+      postRequest("deleteGame", { gid: this.currentDeleteGid }, (data) => {
+        if (data.error === 1) {
+          this.$Message.success("删除成功");
+          this.getUserUploadGameList();
+        } else this.$Message.error("删除失败");
+      });
     },
   },
 };

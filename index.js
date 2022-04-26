@@ -29,16 +29,17 @@ import { postRequest } from "./src/js/request";
 
 router.beforeEach((to, from, next) => {
   if (to.path === "/login") return next();
-  //用户进入某些特定页面前，发起请求判断用户是否登录
-  postRequest("login", { operType: 2 }, (data) => {
-    if (data.error === 2) {
-      Vue.prototype.$Message.error("登录过期，请重新登录");
-      next("/login");
-    } else {
-      store.commit("login", data.uid);
-      next();
-    }
-  });
+  next();
+  //用户进入某些特定页面前，发起请求判断用户是否登录，暂不做
+  // postRequest("login", { operType: 2 }, (data) => {
+  //   if (data.error === 2) {
+  //     Vue.prototype.$Message.error("登录过期，请重新登录");
+  //     next("/login");
+  //   } else {
+  //     store.commit("login", data.uid);
+  //     next();
+  //   }
+  // });
 });
 
 new Vue({

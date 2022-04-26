@@ -5,7 +5,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    uid: undefined,
+    uid: "",
   },
   mutations: {
     login(state, uid) {

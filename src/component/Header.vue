@@ -62,6 +62,7 @@ export default {
     document.addEventListener("click", (e) => {
       this.showUserMenu = false;
     });
+    getAvatarUrl(this);
   },
   methods: {
     goToHome() {
