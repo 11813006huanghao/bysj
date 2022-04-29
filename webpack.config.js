@@ -80,6 +80,7 @@ module.exports = (env, args) => {
   if (env.development) {
     console.log("it is development");
     config.mode = "development";
+    config.devtool = "source-map";
     let devRules = [
       {
         test: /\.(ttf|eot|svg|woff|woff2)$/,

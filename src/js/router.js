@@ -35,6 +35,9 @@ export default new VueRouter({
     {
       path: "/gamedetail/:gid",
       component: GameDetail,
+      meta: {
+        requireLogin: true,
+      },
     },
     {
       path: "/moregame",

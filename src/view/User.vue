@@ -171,8 +171,8 @@ import MessageList from "../component/MessageList.vue";
 import GameList from "../component/GameList.vue";
 import SearchInUserPath from "../component/SearchInUserPath.vue";
 import BaseInfo from "../component/BaseInfo.vue";
-import { getAvatarUrl } from "../js/request";
-import { postRequest } from "../js/request";
+import { setAvatarSrc } from "../js/request";
+import { requestWithAuth } from "../js/request";
 
 export default {
   data: function () {
@@ -186,15 +186,12 @@ export default {
       checkGameNameTimer: null, //对检验游戏名是否存在的请求进行防抖
       gameLabelList: [], //游戏标签
       gameDesc: "",
+      uid: "",
     };
   },
-  computed: {
-    uid() {
-      return this.$store.state.uid;
-    },
-  },
   created() {
-    getAvatarUrl(this);
+    this.uid = this.$route.params.uid;
+    setAvatarSrc(this.uid, this);
   },
   components: {
     MessageList,
@@ -215,7 +212,7 @@ export default {
       let fr = new FileReader();
       fr.readAsDataURL(file);
       fr.onload = function () {
-        postRequest(
+        requestWithAuth(
           "getUserInfo",
           { avatarFileBase64: this.result, uid: that.uid, operType: 4 },
           (data) => {
@@ -232,7 +229,7 @@ export default {
       if (this.checkGameNameTimer) clearTimeout(this.checkGameNameTimer);
       let that = this;
       this.checkGameNameTimer = setTimeout(() => {
-        postRequest(
+        requestWithAuth(
           "getGameInfo",
           { gameName: this.gameName, operType: 2 },
           (data) => {
@@ -270,7 +267,7 @@ export default {
       formData.append("gameVideoFile", this.$refs.videoFileInput.files[0]);
       formData.append("operType", 1);
       formData.append("gameUploadTimeStamp", new Date().getTime());
-      postRequest("getGameInfo", formData, (data) => {
+      requestWithAuth("getGameInfo", formData, (data) => {
         if (data.error === -3) this.$Message.error("上传游戏失败");
         else {
           this.$Message.success("上传游戏成功");

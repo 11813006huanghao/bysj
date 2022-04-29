@@ -14,7 +14,7 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isLogin = false;
-      state.uid = undefined;
+      state.uid = "";
     },
   },
 });

@@ -50,6 +50,7 @@
       </div>
     </div>
     <Button
+      @click="showPublishCommentModal = true"
       style="
         width: 700px;
         margin-top: 100px;
@@ -59,76 +60,44 @@
       "
       >+ 发表评论</Button
     >
-    <div id="comment">
-      <div class="comment-item">
+    <div id="comment" v-if="commentList.length > 0">
+      <div v-for="(item, i) in commentList" :key="i" class="comment-item">
         <div class="comment-content">
-          这个游戏挺不错的，我玩了很长时间，一直出新玩法，百玩不厌。有玩家和我一起交流吗？欢迎加我好友哦，我们一起讨论一下进阶操作和玩法，就当交个朋友吧，谢谢！顶顶顶！！！啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊阿阿阿阿阿阿啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊阿阿阿阿阿阿
+          {{ item.content }}
         </div>
         <div class="comment-footer">
           <div class="sender-avatar">
-            <img
-              src="../resource/image/avatar.png"
-              style="width: 30px"
-              alt=""
-            />
+            <img :src="item.publisher.avatarUrl" style="width: 30px" alt="" />
           </div>
-          <div class="sender-name">徐承启</div>
-          <div class="sender-time">2022-03-05 14:46:22</div>
-          <div :class="{ likeUnlike: true, red: like }">
-            <Icon type="md-thumbs-up" size="20"></Icon> (13478)
+          <div class="sender-name">{{ item.publisher.userName }}</div>
+          <div class="sender-time">{{ item.publisher.publishTime }}</div>
+          <div
+            :class="{ likeUnlike: true, red: item.liked === 1 }"
+            @click="handleLikeUnlikeComment(true, item)"
+          >
+            <Icon type="md-thumbs-up" size="20"></Icon>
+            {{ "(" + item.likeNum + ")" }}
           </div>
           <div
-            :class="{ likeUnlike: true, red: unlike }"
+            :class="{ likeUnlike: true, red: item.liked === -1 }"
             style="margin-left: 15px"
+            @click="handleLikeUnlikeComment(false, item)"
           >
-            <Icon type="md-thumbs-down" size="20"></Icon> (487)
-          </div>
-        </div>
-      </div>
-      <div class="comment-item">
-        <div class="comment-content">
-          也是朋友推荐于是下载了试玩了一下这个游戏，简直发现了新天地，比我预想的要精彩的多。我愿意称之为近几年最好的游戏佳作，希望大家多多支持，多多宣传，冲啊~~
-        </div>
-        <div class="comment-footer">
-          <div class="sender-avatar">
-            <img
-              src="../resource/image/avatar.png"
-              style="width: 30px"
-              alt=""
-            />
-          </div>
-          <div class="sender-name">一往无前釜山行</div>
-          <div class="sender-time">2022-03-01 04:21:22</div>
-          <div class="like-unlike">
-            <Icon type="md-thumbs-up" size="20"></Icon>
-          </div>
-          <div class="like-unlike" style="margin-left: 15px">
             <Icon type="md-thumbs-down" size="20"></Icon>
+            {{ "(" + item.dislikeNum + ")" }}
           </div>
         </div>
       </div>
-      <div class="comment-item">
-        <div class="comment-content">
-          赞赞赞，好久没有找到这么好玩的游戏了，满分推荐兄弟们
-        </div>
-        <div class="comment-footer">
-          <div class="sender-avatar">
-            <img
-              src="../resource/image/avatar.png"
-              style="width: 30px"
-              alt=""
-            />
-          </div>
-          <div class="sender-name">贫僧从东土大唐来</div>
-          <div class="sender-time">2022-01-31 15:05:51</div>
-          <div class="like-unlike">
-            <Icon type="md-thumbs-up" size="20"></Icon>
-          </div>
-          <div class="like-unlike" style="margin-left: 15px">
-            <Icon type="md-thumbs-down" size="20"></Icon>
-          </div>
-        </div>
-      </div>
+    </div>
+    <Page
+      v-if="commentList.length > 0"
+      :total="commentTotal"
+      @on-change="handlePageChange"
+      simple
+      style="margin-top: 20px; margin-bottom: 40px"
+    />
+    <div id="no-comment" v-if="commentList.length === 0">
+      这里还没有任何评论，快点击上方发布第一条评论吧~
     </div>
 
     <Button
@@ -155,12 +124,19 @@
         <Rate show-text allow-half v-model="rate" :disabled="hasRate"> </Rate>
       </div>
     </Modal>
-    <Modal v-model="showPublishCommentModal" title="发表评论">
+    <Modal
+      v-model="showPublishCommentModal"
+      title="发表评论"
+      @on-ok="publishComment"
+    >
       <Input
         type="textarea"
         v-model="userComment"
         placeholder="说点什么..."
         :rows="5"
+        show-word-limit
+        maxlength="200"
+        @on-keydown="handleKeyDown"
       />
     </Modal>
     <BackTop></BackTop>
@@ -168,8 +144,8 @@
 </template>
 
 <script>
-import { postRequest } from "../js/request";
-import { getStandardTimeStr } from "../js/util";
+import { requestWithAuth } from "../js/request";
+import { getStandardTimeStr, buildAvatarSrc } from "../js/util";
 import globalConfig from "../js/config";
 export default {
   data() {
@@ -192,6 +168,9 @@ export default {
       gameRate: "",
       gameRaterNum: 0,
       showPublishCommentBtn: false,
+      commentList: [],
+      commentPage: 1,
+      commentTotal: 0,
     };
   },
   computed: {
@@ -200,15 +179,15 @@ export default {
     },
   },
   created() {
-    //this.gid = this.$route.params.gid;
+    this.gid = this.$route.params.gid;
     window.onscroll = () => {
       this.showPublishCommentBtn = window.scrollY > 720;
     };
-    this.gid = "5292439027";
     this.gameVideoUrl =
       globalConfig.resourceUrlSuffix + "/game/" + this.gid + "/video.mp4";
     this.getGameInfo();
     this.getUserGameRelation();
+    this.getComment();
   },
   beforeDestroy() {
     window.onscroll = function () {};
@@ -219,7 +198,7 @@ export default {
     },
     handleRate() {
       if (this.hasRate) return;
-      postRequest(
+      requestWithAuth(
         "getUserGameRelation",
         { uid: this.uid, gid: this.gid, rate: String(this.rate), operType: 3 },
         (data) => {
@@ -233,17 +212,23 @@ export default {
       );
     },
     getGameInfo() {
-      postRequest("getGameInfo", { gid: this.gid, operType: 5 }, (data) => {
+      requestWithAuth("getGameInfo", { gid: this.gid, operType: 5 }, (data) => {
         if (data.error === 6) {
           Object.assign(this, data.gameObj);
           this.gameUploadTime = getStandardTimeStr(
             new Date(Number(this.gameUploadTimeStamp))
           );
-        } else this.$Message.error("获取游戏信息失败，请刷新重试");
+        } else {
+          this.loadViewFail = true;
+          this.$Notice.error({
+            title: "获取游戏信息失败",
+            desc: "请检查网址拼写是否正确，或关闭此页面",
+          });
+        }
       });
     },
     getUserGameRelation() {
-      postRequest(
+      requestWithAuth(
         "getUserGameRelation",
         { uid: this.uid, gid: this.gid, operType: 1 },
         (data) => {
@@ -258,7 +243,7 @@ export default {
       );
     },
     handleToggleStarGame() {
-      postRequest(
+      requestWithAuth(
         "getUserGameRelation",
         {
           uid: this.uid,
@@ -271,6 +256,81 @@ export default {
           data.error === 2 && (this.hasStarGame = !this.hasStarGame);
         }
       );
+    },
+    handleKeyDown(event) {
+      //阻止textarea中输入回车键
+      if (event.keyCode == 13) event.preventDefault();
+    },
+    publishComment() {
+      requestWithAuth(
+        "getComment",
+        {
+          uid: this.uid,
+          gid: this.gid,
+          content: this.userComment,
+          timeStamp: String(new Date().getTime()),
+          operType: 2,
+        },
+        (data) => {
+          if (data.error === 2) {
+            this.$Message.success("评论成功");
+            this.userComment = "";
+            this.getComment();
+          } else this.$Message.error("评论失败");
+        }
+      );
+    },
+    getComment() {
+      requestWithAuth(
+        "getComment",
+        { uid: this.uid, gid: this.gid, page: this.commentPage, operType: 1 },
+        (data) => {
+          if (data.error === 1) {
+            this.commentList = data.commentList;
+            this.commentTotal = data.total;
+            for (let item of this.commentList) {
+              item.publisher.publishTime = getStandardTimeStr(
+                new Date(Number(item.publisher.timeStamp)),
+                true
+              );
+              item.publisher.avatarUrl = buildAvatarSrc(
+                item.publisher.uid,
+                item.publisher.avatarUrl
+              );
+            }
+          } else this.$Message.error("获取评论列表失败");
+        }
+      );
+    },
+    handleLikeUnlikeComment(clickThumbUp, comment) {
+      let likeStatus = 0;
+      /**0，表示既没有点赞也没有点踩
+       *,1，表示点了赞
+       * -1，表示点了踩
+       */
+      if (clickThumbUp && comment.liked != 1) likeStatus = 1;
+      if (!clickThumbUp && comment.liked != -1) likeStatus = -1;
+      requestWithAuth(
+        "getComment",
+        {
+          uid: this.uid,
+          gid: this.gid,
+          cid: comment.cid,
+          newLike: likeStatus,
+          oldLike: comment.liked,
+          operType: 3,
+        },
+        (data) => {
+          if (data.error === 3) {
+            this.$Message.success("操作成功");
+            this.getComment();
+          } else this.$Message.error("操作失败");
+        }
+      );
+    },
+    handlePageChange(newPage) {
+      this.commentPage = newPage;
+      this.getComment();
     },
   },
 };
@@ -351,6 +411,11 @@ export default {
 }
 #rate {
   margin-top: 10px;
+}
+#no-comment {
+  height: 100px;
+  margin-top: 10px;
+  font-weight: bold;
 }
 #comment {
   width: 700px;

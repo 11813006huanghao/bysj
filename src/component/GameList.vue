@@ -35,7 +35,10 @@
           "
           >删除</Button
         >
-        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+        <Button
+          :to="'/gamedetail/' + game.gid"
+          target="_blank"
+          style="color: #ff6666; width: 90px; margin-left: 10px"
           >更多详情</Button
         >
       </div>
@@ -60,7 +63,10 @@
       </div>
       <div class="item-border"></div>
       <div class="btn-group">
-        <Button style="color: #ff6666; width: 90px; margin-left: 10px"
+        <Button
+          :to="'/gamedetail/' + game.gid"
+          target="_blank"
+          style="color: #ff6666; width: 90px; margin-left: 10px"
           >更多详情</Button
         >
       </div>
@@ -84,7 +90,7 @@
 </template>
 
 <script>
-import { postRequest } from "../js/request";
+import { requestWithAuth, postRequest } from "../js/request";
 import globalConfig from "../js/config";
 import NoContent from "../component/NoContent.vue";
 export default {
@@ -111,6 +117,7 @@ export default {
     NoContent,
   },
   created() {
+    this.uid = this.$route.params.uid;
     if (this.type === "upload") this.getUserUploadGameList();
     else if (this.type === "star") this.getUserStarGameList();
   },
@@ -118,7 +125,11 @@ export default {
     getUserUploadGameList() {
       postRequest(
         "getGameInfo",
-        { uid: this.$store.state.uid, page: this.currentPage, operType: 3 },
+        {
+          uid: this.uid,
+          page: this.currentPage,
+          operType: 3,
+        },
         (data) => {
           if (data.error === 4) {
             let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
@@ -137,7 +148,11 @@ export default {
     getUserStarGameList() {
       postRequest(
         "getGameInfo",
-        { uid: this.$store.state.uid, page: this.currentPage, operType: 4 },
+        {
+          uid: this.uid,
+          page: this.currentPage,
+          operType: 4,
+        },
         (data) => {
           if (data.error === 5) {
             let srcSuffix = globalConfig.resourceUrlSuffix + "/game";
@@ -159,7 +174,7 @@ export default {
       this.type === "star" && this.getUserStarGameList();
     },
     deleteGame() {
-      postRequest("deleteGame", { gid: this.currentDeleteGid }, (data) => {
+      requestWithAuth("deleteGame", { gid: this.currentDeleteGid }, (data) => {
         if (data.error === 1) {
           this.$Message.success("删除成功");
           this.getUserUploadGameList();

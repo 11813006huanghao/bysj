@@ -138,14 +138,14 @@ export default {
       this.$router.push("/register");
     },
     handleLogin() {
-      this.$axios
-        .post("login", {
+      postRequest(
+        "login",
+        {
           phone: this.phoneNum,
           password: this.password,
           operType: 1,
-        })
-        .then((rsp) => {
-          let data = rsp.data;
+        },
+        (data) => {
           if (data.error === 0) {
             this.$store.commit("login", data.uid);
             this.$router.push("/");
@@ -159,7 +159,8 @@ export default {
           } else if (data.error === 1) {
             this.$Message.error("手机号未注册或密码不正确");
           }
-        });
+        }
+      );
     },
     handleResetPwd() {
       if (this.btnDisable || !/[0-9]{11}/.test(this.resetPhoneNum)) {
@@ -209,6 +210,7 @@ export default {
           this.countDownTimer = null;
         }
       }, 1000);
+
       postRequest(
         "register",
         { phone: this.resetPhoneNum, operType: 1 },

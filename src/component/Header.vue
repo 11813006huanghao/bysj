@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getAvatarUrl } from "../js/request";
+import { setAvatarSrc } from "../js/request";
 export default {
   data() {
     return {
@@ -53,8 +53,12 @@ export default {
     },
   },
   watch: {
-    uid(newValue, oldValue) {
-      getAvatarUrl(this);
+    uid: {
+      handler: function (newValue, oldValue) {
+        this.isLogin && setAvatarSrc(newValue, this);
+      },
+      immediate: true,
+      deep: true,
     },
   },
   created() {
@@ -62,7 +66,6 @@ export default {
     document.addEventListener("click", (e) => {
       this.showUserMenu = false;
     });
-    getAvatarUrl(this);
   },
   methods: {
     goToHome() {

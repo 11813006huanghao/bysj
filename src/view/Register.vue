@@ -189,6 +189,8 @@ export default {
       postRequest("register", { phone: this.phoneNum, operType: 2 }, (data) => {
         if (data.error === 6) {
           that.$Message.success("验证码发送成功");
+        } else if (data.error === 2) {
+          this.$Message.error("手机号已注册，请登录");
         } else {
           that.$Message.error("验证码发送失败，请检查手机号是否正确");
         }

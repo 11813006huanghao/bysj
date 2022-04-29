@@ -46,11 +46,12 @@
 </template>
 
 <script>
-import { postRequest } from "../js/request";
+import { requestWithAuth, postRequest } from "../js/request";
 import { getStandardTimeStr } from "../js/util";
 export default {
   data() {
     return {
+      uid: "",
       gender: "M", //用户选择的性别
       dateConfig: {
         //日期组件的配置
@@ -63,17 +64,13 @@ export default {
       signature: "", //用户填写的个性签名
     };
   },
-  computed: {
-    uid() {
-      return this.$store.state.uid;
-    },
-  },
-  beforeMount() {
+  created() {
+    this.uid = this.$route.params.uid;
     this.getUserBaseInfo();
   },
   methods: {
     onClickModify() {
-      postRequest(
+      requestWithAuth(
         "getUserInfo",
         {
           uid: this.uid,
@@ -95,7 +92,7 @@ export default {
     getUserBaseInfo() {
       postRequest("getUserInfo", { uid: this.uid, operType: 1 }, (data) => {
         if (data.error === -1)
-          this.$Message.error("获取用户信息失败，请刷新重试");
+          this.$Message.error("获取用户信息失败，请检查地址正确性");
         else if (data.error === 1) {
           Object.assign(this, data.userBaseInfo);
         }
