@@ -4,11 +4,7 @@
       <img id="title-img" src="../resource/image/title.jpg" alt="" />
       <img id="title-font" src="../resource/image/title-font.png" alt="" />
     </div>
-    <div id="navigator">
-      <span class="top-menu">主页</span>
-      <span class="top-menu" @click="goToCommunity">社区</span>
-      <span class="top-menu">相关</span>
-    </div>
+    <div id="navigator"></div>
     <router-link v-if="!isLogin" id="login" to="/login">登录</router-link>
     <router-link v-if="!isLogin" id="register" to="/register">注册</router-link>
     <div v-if="isLogin" id="current-avatar-wrap">
@@ -81,8 +77,9 @@ export default {
     handleUserMenuSelect(menuName) {
       if (menuName === "logout") {
         this.$store.commit("logout");
-        document.cookie = "uid=null;max-age=0";
+        document.cookie = "uid='';max-age=0;path=/";
         this.$router.push("/login");
+        console.log(JSON.stringify(document.cookie));
       } else {
         let newTab = this.$router.resolve({ path: "/user/" + this.uid });
         window.open(newTab.href, "_blank");

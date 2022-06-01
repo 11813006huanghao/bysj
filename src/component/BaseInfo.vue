@@ -39,8 +39,8 @@
       />
     </div>
     <div id="footer-btn-group">
-      <Button @click="onClickReset">重置</Button>
-      <Button @click="onClickModify">修改</Button>
+      <Button v-if="isSelf" @click="onClickReset">重置</Button>
+      <Button v-if="isSelf" @click="onClickModify">修改</Button>
     </div>
   </div>
 </template>
@@ -49,6 +49,7 @@
 import { requestWithAuth, postRequest } from "../js/request";
 import { getStandardTimeStr } from "../js/util";
 export default {
+  props: ["isSelf"],
   data() {
     return {
       uid: "",

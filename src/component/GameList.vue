@@ -21,7 +21,7 @@
       <div class="item-border"></div>
       <div class="btn-group">
         <Button
-          v-show="type === 'upload'"
+          v-show="type === 'upload' && isSelf"
           @click="
             showDeleteGameConfirm = true;
             currentDeleteGid = game.gid;
@@ -94,7 +94,7 @@ import { requestWithAuth, postRequest } from "../js/request";
 import globalConfig from "../js/config";
 import NoContent from "../component/NoContent.vue";
 export default {
-  props: ["type"], //star, upload
+  props: ["type", "isSelf"], //type值为star, upload
   data() {
     return {
       userUploadGameList: [],
@@ -122,12 +122,13 @@ export default {
     else if (this.type === "star") this.getUserStarGameList();
   },
   methods: {
-    getUserUploadGameList() {
+    getUserUploadGameList(filterContent) {
       postRequest(
         "getGameInfo",
         {
           uid: this.uid,
           page: this.currentPage,
+          filterGameName: filterContent,
           operType: 3,
         },
         (data) => {
@@ -145,12 +146,13 @@ export default {
         }
       );
     },
-    getUserStarGameList() {
+    getUserStarGameList(filterContent) {
       postRequest(
         "getGameInfo",
         {
           uid: this.uid,
           page: this.currentPage,
+          filterGameName: filterContent,
           operType: 4,
         },
         (data) => {

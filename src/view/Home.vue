@@ -109,26 +109,75 @@
         </CellGroup>
       </div>
     </div>
-    <SixGameContainer style="margin-top: 100px"></SixGameContainer>
+    <SixGameContainer
+      categoryName="竞技类"
+      :gameList="competitiveGameList"
+      style="margin-top: 100px"
+    ></SixGameContainer>
+
+    <SixGameContainer
+      categoryName="休闲类"
+      :gameList="relaxGameList"
+      style="margin-top: 100px"
+    ></SixGameContainer>
   </div>
 </template>
 
 <script>
 import SixGameContainer from "../component/SixGameContainer.vue";
+import Config from "../js/config";
 export default {
   data() {
     return {
       coverIndex: 0, //轮播图当前展示的游戏封面的序号
+      gidList: [
+        "5299093911",
+        "7480850710",
+        "8856403211",
+        "4365253061",
+        "9219094631",
+        "8073099655",
+        "2150308583",
+      ],
+      competitiveGameList: [
+        { name: "波西利亚时光", rate: 3.6, raterNum: 2111, src: "game3.jpg" },
+        { name: "英雄联盟", rate: 4.6, raterNum: 12571, src: "game2.jpg" },
+        { name: "伊苏白金", rate: 4.0, raterNum: 254, src: "game5.jpg" },
+        { name: "围攻", rate: 3.9, raterNum: 294, src: "game7.jpg" },
+        { name: "绝地求生", rate: 4.2, raterNum: 22589, src: "game9.jpg" },
+        { name: "CF", rate: 4.4, raterNum: 8541, src: "game13.jpg" },
+      ],
+      relaxGameList: [
+        { name: "游戏世界", rate: 3.2, raterNum: 624, src: "game4.jpg" },
+        { name: "云幻古界", rate: 3.8, raterNum: 461, src: "game5-cover.jpg" },
+        { name: "剑灵", rate: 4.4, raterNum: 14262, src: "game8.jpg" },
+        { name: "黄金之路", rate: 3.9, raterNum: 8621, src: "game10.jpg" },
+        { name: "和平精英", rate: 4.1, raterNum: 22549, src: "game12.jpg" },
+        {
+          name: "枪战之王",
+          rate: 4.0,
+          raterNum: 7492,
+          src: "game16-cover.jpg",
+        },
+      ],
     };
   },
   components: {
     SixGameContainer,
   },
+  created() {
+    for (let game of this.competitiveGameList) {
+      game.src = Config.resourceUrlSuffix + "/game/" + game.src;
+    }
+    for (let game of this.relaxGameList) {
+      game.src = Config.resourceUrlSuffix + "/game/" + game.src;
+    }
+  },
   methods: {
     handleCoverClick(index) {
       console.log(index);
       let newTab = this.$router.resolve({
-        path: "/gamedetail/10",
+        path: "/gamedetail/" + this.gidList[index],
       });
       window.open(newTab.href, "_blank");
     },

@@ -48,8 +48,10 @@ export async function requestWithAuth(url, payload = {}, callback) {
     tmpVue.$Message.warning("请先登录");
     router.push("/login");
     return;
-  } else if (loginStatusRsp.error === 3) location.reload();
-  else if (loginStatusRsp.error === 5) {
+  } else if (loginStatusRsp.error === 3) {
+    location.reload();
+    return;
+  } else if (loginStatusRsp.error === 5) {
     tmpVue.$store.commit("login", loginStatusRsp.uid);
     payload.uid = loginStatusRsp.uid;
   }
@@ -62,7 +64,8 @@ export function getRequest() {
 
 export function setAvatarSrc(uid, vueObj) {
   if (uid === "") return;
-  axios.post("getUserInfo", { uid, operType: 2 }).then((data) => {
+  axios.post("getUserInfo", { uid, operType: 2 }).then((rsp) => {
+    let data = rsp.data;
     vueObj.avatarUrl = buildAvatarSrc(uid, data.avatarUrl);
   });
 }

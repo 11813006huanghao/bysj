@@ -1,7 +1,7 @@
 <template>
   <div id="six-game-container">
     <div id="game-category-title">
-      <div id="category-name">竞技类</div>
+      <div id="category-name">{{ categoryName }}</div>
       <Button
         style="margin-left: 850px; color: #ff6666"
         to="/moregame"
@@ -9,127 +9,32 @@
         >更多</Button
       >
     </div>
-    <div id="test1" class="game-card">
+    <div
+      v-for="(item, i) in gameList"
+      :key="i"
+      :id="categoryName + i"
+      class="game-card"
+      @click="goToGameDetail"
+    >
       <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game2.jpg"
-          alt=""
-        />
-        <div v-show="showGameDsc" class="game-dsc">这是一款刺激的竞技游戏</div>
+        <img class="game-card-img" :src="item.src" alt="" />
+        <div v-show="showGameDsc === categoryName + i" class="game-dsc">
+          这是一个游戏样本
+        </div>
       </div>
       <div class="game-card-footer">
-        <div class="game-name">英雄联盟</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="3.6">
-          <span style="color: #f5a623">3.6</span>
-          <span style="font-size: 4px"> （32001评价）</span>
+        <div class="game-name">{{ item.name }}</div>
+        <Rate style="margin-left: 10px" show-text allow-half :value="item.rate">
+          <span style="color: #f5a623">{{ item.rate }}</span>
+          <span style="font-size: 4px">
+            {{ "（" + item.raterNum + "评价）" }}</span
+          >
         </Rate>
       </div>
       <div
         class="mouse-area"
-        @mouseenter="handleGameCardHover('test1')"
-        @mouseleave="handleGameCardLeave('test1')"
-      ></div>
-    </div>
-    <div class="game-card" id="test2">
-      <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game3.jpg"
-          alt=""
-        />
-        <div v-show="showGameDsc" class="game-dsc">这是一款刺激的竞技游戏</div>
-      </div>
-      <div class="game-card-footer">
-        <div class="game-name">波西利亚时光</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="4.0">
-          <span style="color: #f5a623">4.0</span>
-          <span style="font-size: 4px"> （13201评价）</span>
-        </Rate>
-      </div>
-      <div
-        class="mouse-area2"
-        @mouseenter="handleGameCardHover('test2')"
-        @mouseleave="handleGameCardLeave('test2')"
-      ></div>
-    </div>
-    <div class="game-card">
-      <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game9.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-card-footer">
-        <div class="game-name">绝地求生</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="4.2">
-          <span style="color: #f5a623">4.2</span>
-          <span style="font-size: 4px"> （2546评价）</span>
-        </Rate>
-      </div>
-    </div>
-    <div id="test4" class="game-card">
-      <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game7.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-card-footer">
-        <div class="game-name">围攻</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="3.9">
-          <span style="color: #f5a623">3.9</span>
-          <span style="font-size: 4px"> （423评价）</span>
-        </Rate>
-      </div>
-      <div
-        class="mouse-area4"
-        @mouseenter="handleGameCardHover('test4')"
-        @mouseleave="handleGameCardLeave('test4')"
-      ></div>
-    </div>
-    <div id="test4" class="game-card">
-      <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game7.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-card-footer">
-        <div class="game-name">围攻</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="3.9">
-          <span style="color: #f5a623">3.9</span>
-          <span style="font-size: 4px"> （423评价）</span>
-        </Rate>
-      </div>
-      <div
-        class="mouse-area4"
-        @mouseenter="handleGameCardHover('test4')"
-        @mouseleave="handleGameCardLeave('test4')"
-      ></div>
-    </div>
-    <div id="test4" class="game-card">
-      <div class="game-card-img-wrap">
-        <img
-          class="game-card-img"
-          src="../resource/image/game/game7.jpg"
-          alt=""
-        />
-      </div>
-      <div class="game-card-footer">
-        <div class="game-name">围攻</div>
-        <Rate style="margin-left: 10px" show-text allow-half :value="3.9">
-          <span style="color: #f5a623">3.9</span>
-          <span style="font-size: 4px"> （423评价）</span>
-        </Rate>
-      </div>
-      <div
-        class="mouse-area4"
-        @mouseenter="handleGameCardHover('test4')"
-        @mouseleave="handleGameCardLeave('test4')"
+        @mouseenter="handleGameCardHover(categoryName + i)"
+        @mouseleave="handleGameCardLeave(categoryName + i)"
       ></div>
     </div>
   </div>
@@ -137,24 +42,32 @@
 
 <script>
 export default {
+  props: ["gameList", "categoryName"],
   data() {
     return {
-      showGameDsc: false,
+      showGameDsc: "",
     };
   },
   methods: {
     handleGameCardHover(id) {
+      console.log(id);
       let cardDOM = document.getElementById(id);
       cardDOM.style.marginTop = "-10px";
       cardDOM.style.boxShadow =
         "0 4px 8px 0 #ff6666, 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
-      this.showGameDsc = true;
+      this.showGameDsc = id;
     },
     handleGameCardLeave(id) {
       let cardDOM = document.getElementById(id);
       cardDOM.style.marginTop = "0px";
       cardDOM.style.boxShadow = "0 0px 0px 0 #ff6666";
-      this.showGameDsc = false;
+      this.showGameDsc = "";
+    },
+    goToGameDetail() {
+      let newTab = this.$router.resolve({
+        path: "/gamedetail/4623524215",
+      });
+      window.open(newTab.href, "_blank");
     },
   },
 };
@@ -173,6 +86,7 @@ export default {
   margin-bottom: 50px;
   cursor: pointer;
   height: 230px;
+  position: relative;
 }
 .game-card-img-wrap {
   width: 300px;
@@ -202,7 +116,7 @@ export default {
 .mouse-area {
   width: 300px;
   height: 220px;
-  top: 100px;
+  top: 0px;
   position: absolute;
 }
 .mouse-area2 {

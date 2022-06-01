@@ -4,96 +4,99 @@
       <div class="message-content">{{ item.content }}</div>
       <div class="message-sender">
         来自
-        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
+        <img class="sender-avatar" :src="item.sender.avatarUrl" alt="" />
         <div class="sender-name">
-          <div>{{ item.name }}</div>
-          <div>{{ item.time }}</div>
+          <div>{{ item.sender.userName }}</div>
+          <div>{{ item.sender.sendTime }}</div>
         </div>
       </div>
       <div class="reply-button-wrap">
-        <Button class="reply-btn">回复</Button>
+        <Button class="reply-btn" @click="handleClickReply(item)">回复</Button>
       </div>
     </div>
-    <div class="message-item">
-      <div class="message-content">今天是你的生日吗？祝你生日快乐鸭</div>
-      <div class="message-sender">
-        来自
-        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
-        <div class="sender-name">
-          <div>红红火火恍恍惚惚或或</div>
-          <div>2021-10-21</div>
-        </div>
-      </div>
-
-      <div class="reply-button-wrap">
-        <Button class="reply-btn">回复</Button>
-      </div>
-    </div>
-    <div class="message-item">
-      <div class="message-content">今天是你的生日吗？祝你生日快乐鸭</div>
-      <div class="message-sender">
-        来自
-        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
-        <div class="sender-name">
-          <div>红红火火恍恍惚惚或或</div>
-          <div>2021-10-21</div>
-        </div>
-      </div>
-      <div class="reply-button-wrap">
-        <Button class="reply-btn">回复</Button>
-      </div>
-    </div>
-    <div class="message-item">
-      <div class="message-content">今天是你的生日吗？祝你生日快乐鸭</div>
-      <div class="message-sender">
-        来自
-        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
-        <div class="sender-name">
-          <div>红红火火恍恍惚惚或或</div>
-          <div>2021-10-21</div>
-        </div>
-      </div>
-      <div class="reply-button-wrap">
-        <Button class="reply-btn">回复</Button>
-      </div>
-    </div>
-    <div class="message-item">
-      <div class="message-content">
-        今天是你的生日吗？祝你生日快乐鸭
-        红红火火恍恍惚惚或或或或或或或或或或或或或或 红红火火恍恍惚惚或或或或
-        红红火火恍恍惚惚或或或或或或或或或或或或或或或或或或或或或红红火火恍恍惚惚或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或或
-      </div>
-      <div class="message-sender">
-        来自
-        <img class="sender-avatar" src="../resource/image/avatar.png" alt="" />
-        <div class="sender-name">
-          <div>红红火火恍恍惚惚或或</div>
-          <div>2021-10-21</div>
-        </div>
-      </div>
-      <div class="reply-button-wrap">
-        <Button class="reply-btn">回复</Button>
-      </div>
-    </div>
+    <Modal
+      v-model="showReplyMessageModal"
+      title="回复留言"
+      @on-ok="handleReplyMessage"
+    >
+      <Input
+        type="textarea"
+        v-model="replyMessage"
+        placeholder="留点什么..."
+        :rows="4"
+        show-word-limit
+        maxlength="100"
+      />
+    </Modal>
   </div>
 </template>
 
 <script>
+import { requestWithAuth } from "../js/request";
+import { buildAvatarSrc, getStandardTimeStr } from "../js/util";
 export default {
+  props: ["isSelf"],
   data() {
     return {
       messageList: [],
+      currentPage: 1,
+      messageTotal: 0,
+      showReplyMessageModal: false, //展示回复留言对话框
+      replyMessage: "", //回复的内容
+      replyToUid: "", //被回复的人的id
     };
   },
   created() {
-    for (let i = 0; i < 10; i++) {
-      let item = {
-        content: "今天天气不错哦，要出来一起玩吗？",
-        name: "发送者" + i,
-        time: "2021-10-31 14:22:10",
-      };
-      this.messageList.push(item);
-    }
+    this.isSelf && setTimeout(this.getMessageList, 500);
+  },
+  methods: {
+    getMessageList() {
+      requestWithAuth(
+        "getMessage",
+        {
+          operType: 1,
+          page: this.currentPage,
+          receiverUid: this.$store.state.uid,
+        },
+        (data) => {
+          if (data.error === 1) {
+            this.messageList = data.messageList;
+            this.messageTotal = data.total;
+            for (let item of this.messageList) {
+              console.log(item);
+              item.sender.sendTime = getStandardTimeStr(
+                new Date(Number(item.sender.timeStamp)),
+                true
+              );
+              item.sender.avatarUrl = buildAvatarSrc(
+                item.sender.uid,
+                item.sender.avatarUrl
+              );
+            }
+          } else this.$Message.error("获取留言列表失败");
+        }
+      );
+    },
+    handleReplyMessage() {
+      requestWithAuth(
+        "getMessage",
+        {
+          operType: 2,
+          senderUid: this.$store.state.uid,
+          receiverUid: this.replyToUid,
+          content: this.replyMessage,
+          timeStamp: String(new Date().getTime()),
+        },
+        (data) => {
+          if (data.error === 2) this.$Message.success("回复成功");
+          else this.$Message.error("回复失败");
+        }
+      );
+    },
+    handleClickReply(message) {
+      this.showReplyMessageModal = true;
+      this.replyToUid = message.sender.uid;
+    },
   },
 };
 </script>

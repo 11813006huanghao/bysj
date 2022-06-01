@@ -17,6 +17,7 @@ VueRouter.prototype.push = function (location) {
 };
 
 axios.defaults.baseURL = globalConfig.host + ":" + globalConfig.port + "/";
+if (!process.env.development) axios.defaults.baseURL += "gamer/";
 axios.defaults.withCredentials = true; //设置axios允许后端设置cookie
 Vue.prototype.$axios = axios;
 
